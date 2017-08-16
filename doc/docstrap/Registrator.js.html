@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>JsSIP Source: Registrator.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
+
+</head>
+
+<body>
+<div class="container-fluid">
+	<div class="navbar navbar-fixed-top navbar-inverse">
+		<div class="navbar-inner">
+			<a class="brand" href="index.html">JsSIP</a>
+			<ul class="nav">
+				
+				<li class="dropdown">
+					<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="JsSIP.html">JsSIP</a>
+						</li>
+						
+						<li>
+							<a href="JsSIP.Exceptions.html">JsSIP.Exceptions</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="JsSIP.Exceptions.ConfigurationError.html">JsSIP.Exceptions.ConfigurationError</a>
+						</li>
+						
+						<li>
+							<a href="JsSIP.UA.html">JsSIP.UA</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="global.html#checkTransaction">checkTransaction</a>
+						</li>
+						
+						<li>
+							<a href="global.html#debug">debug</a>
+						</li>
+						
+						<li>
+							<a href="global.html#debugnict">debugnict</a>
+						</li>
+						
+						<li>
+							<a href="global.html#getHeader">getHeader</a>
+						</li>
+						
+						<li>
+							<a href="global.html#JsSIP_C">JsSIP_C</a>
+						</li>
+						
+						<li>
+							<a href="global.html#OutgoingRequest">OutgoingRequest</a>
+						</li>
+						
+						<li>
+							<a href="global.html#URI">URI</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+			</ul>
+		</div>
+	</div>
+
+	<div class="row-fluid">
+
+		
+			<div class="span12">
+				
+				<div id="main">
+					
+
+
+		<h1 class="page-title">Source: Registrator.js</h1>
+    
+<section>
+	<article>
+		<pre
+			class="sunlight-highlight-javascript linenums">module.exports = Registrator;
+
+
+/**
+ * Dependecies
+ */
+var debug = require('debug')('JsSIP:Registrator');
+var Utils = require('./Utils');
+var JsSIP_C = require('./Constants');
+var SIPMessage = require('./SIPMessage');
+var RequestSender = require('./RequestSender');
+
+
+function Registrator(ua, transport) {
+  var reg_id=1; //Force reg_id to 1.
+
+  this.ua = ua;
+  this.transport = transport;
+
+  this.registrar = ua.configuration.registrar_server;
+  this.expires = ua.configuration.register_expires;
+
+  // Call-ID and CSeq values RFC3261 10.2
+  this.call_id = Utils.createRandomToken(22);
+  this.cseq = 0;
+
+  // this.to_uri
+  this.to_uri = ua.configuration.uri;
+
+  this.registrationTimer = null;
+
+  // Set status
+  this.registered = false;
+
+  // Contact header
+  this.contact = this.ua.contact.toString();
+
+  // sip.ice media feature tag (RFC 5768)
+  this.contact += ';+sip.ice';
+
+  // Custom headers for REGISTER and un-REGISTER.
+  this.extraHeaders = [];
+
+  // Custom Contact header params for REGISTER and un-REGISTER.
+  this.extraContactParams = "";
+
+  if(reg_id) {
+    this.contact += ';reg-id='+ reg_id;
+    this.contact += ';+sip.instance="&lt;urn:uuid:'+ this.ua.configuration.instance_id+'>"';
+  }
+}
+
+
+Registrator.prototype = {
+  setExtraHeaders: function(extraHeaders) {
+    if (! extraHeaders instanceof Array) {
+      extraHeaders = [];
+    }
+
+    this.extraHeaders = extraHeaders.slice();
+  },
+
+  setExtraContactParams: function(extraContactParams) {
+    if (! extraContactParams instanceof Object) {
+      extraContactParams = {};
+    }
+
+    // Reset it.
+    this.extraContactParams = "";
+
+    for(var param_key in extraContactParams) {
+      var param_value = extraContactParams[param_key];
+      this.extraContactParams += (";" + param_key);
+      if (param_value) {
+        this.extraContactParams += ("=" + param_value);
+      }
+    }
+  },
+
+  register: function() {
+    var request_sender, cause, extraHeaders,
+      self = this;
+
+    extraHeaders = this.extraHeaders.slice();
+    extraHeaders.push('Contact: ' + this.contact + ';expires=' + this.expires + this.extraContactParams);
+    extraHeaders.push('Expires: '+ this.expires);
+
+    this.request = new SIPMessage.OutgoingRequest(JsSIP_C.REGISTER, this.registrar, this.ua, {
+        'to_uri': this.to_uri,
+        'call_id': this.call_id,
+        'cseq': (this.cseq += 1)
+      }, extraHeaders);
+
+    request_sender = new RequestSender(this, this.ua);
+
+    this.receiveResponse = function(response) {
+      var contact, expires,
+        contacts = response.getHeaders('contact').length;
+
+      // Discard responses to older REGISTER/un-REGISTER requests.
+      if(response.cseq !== this.cseq) {
+        return;
+      }
+
+      // Clear registration timer
+      if (this.registrationTimer !== null) {
+        clearTimeout(this.registrationTimer);
+        this.registrationTimer = null;
+      }
+
+      switch(true) {
+        case /^1[0-9]{2}$/.test(response.status_code):
+          // Ignore provisional responses.
+          break;
+        case /^2[0-9]{2}$/.test(response.status_code):
+          if(response.hasHeader('expires')) {
+            expires = response.getHeader('expires');
+          }
+
+          // Search the Contact pointing to us and update the expires value accordingly.
+          if (!contacts) {
+            debug('no Contact header in response to REGISTER, response ignored');
+            break;
+          }
+
+          while(contacts--) {
+            contact = response.parseHeader('contact', contacts);
+            if(contact.uri.user === this.ua.contact.uri.user) {
+              expires = contact.getParam('expires');
+              break;
+            } else {
+              contact = null;
+            }
+          }
+
+          if (!contact) {
+            debug('no Contact header pointing to us, response ignored');
+            break;
+          }
+
+          if(!expires) {
+            expires = this.expires;
+          }
+
+          // Re-Register before the expiration interval has elapsed.
+          // For that, decrease the expires value. ie: 3 seconds
+          this.registrationTimer = setTimeout(function() {
+            self.registrationTimer = null;
+            self.register();
+          }, (expires * 1000) - 3000);
+
+          //Save gruu values
+          if (contact.hasParam('temp-gruu')) {
+            this.ua.contact.temp_gruu = contact.getParam('temp-gruu').replace(/"/g,'');
+          }
+          if (contact.hasParam('pub-gruu')) {
+            this.ua.contact.pub_gruu = contact.getParam('pub-gruu').replace(/"/g,'');
+          }
+
+          if (! this.registered) {
+            this.registered = true;
+            this.ua.emit('registered', this.ua, {
+              response: response
+            });
+          }
+          break;
+        // Interval too brief RFC3261 10.2.8
+        case /^423$/.test(response.status_code):
+          if(response.hasHeader('min-expires')) {
+            // Increase our registration interval to the suggested minimum
+            this.expires = response.getHeader('min-expires');
+            // Attempt the registration again immediately
+            this.register();
+          } else { //This response MUST contain a Min-Expires header field
+            debug('423 response received for REGISTER without Min-Expires');
+            this.registrationFailure(response, JsSIP_C.causes.SIP_FAILURE_CODE);
+          }
+          break;
+        default:
+          cause = Utils.sipErrorCause(response.status_code);
+          this.registrationFailure(response, cause);
+      }
+    };
+
+    this.onRequestTimeout = function() {
+      this.registrationFailure(null, JsSIP_C.causes.REQUEST_TIMEOUT);
+    };
+
+    this.onTransportError = function() {
+      this.registrationFailure(null, JsSIP_C.causes.CONNECTION_ERROR);
+    };
+
+    request_sender.send();
+  },
+
+  unregister: function(options) {
+    var extraHeaders;
+
+    if(!this.registered) {
+      debug('already unregistered');
+      return;
+    }
+
+    options = options || {};
+
+    this.registered = false;
+
+    // Clear the registration timer.
+    if (this.registrationTimer !== null) {
+      clearTimeout(this.registrationTimer);
+      this.registrationTimer = null;
+    }
+
+    extraHeaders = this.extraHeaders.slice();
+
+    if(options.all) {
+      extraHeaders.push('Contact: *' + this.extraContactParams);
+      extraHeaders.push('Expires: 0');
+
+      this.request = new SIPMessage.OutgoingRequest(JsSIP_C.REGISTER, this.registrar, this.ua, {
+          'to_uri': this.to_uri,
+          'call_id': this.call_id,
+          'cseq': (this.cseq += 1)
+        }, extraHeaders);
+    } else {
+      extraHeaders.push('Contact: '+ this.contact + ';expires=0' + this.extraContactParams);
+      extraHeaders.push('Expires: 0');
+
+      this.request = new SIPMessage.OutgoingRequest(JsSIP_C.REGISTER, this.registrar, this.ua, {
+          'to_uri': this.to_uri,
+          'call_id': this.call_id,
+          'cseq': (this.cseq += 1)
+        }, extraHeaders);
+    }
+
+    var request_sender = new RequestSender(this, this.ua);
+
+    this.receiveResponse = function(response) {
+      var cause;
+
+      switch(true) {
+        case /^1[0-9]{2}$/.test(response.status_code):
+          // Ignore provisional responses.
+          break;
+        case /^2[0-9]{2}$/.test(response.status_code):
+          this.unregistered(response);
+          break;
+        default:
+          cause = Utils.sipErrorCause(response.status_code);
+          this.unregistered(response, cause);
+      }
+    };
+
+    this.onRequestTimeout = function() {
+      this.unregistered(null, JsSIP_C.causes.REQUEST_TIMEOUT);
+    };
+
+    this.onTransportError = function() {
+      this.unregistered(null, JsSIP_C.causes.CONNECTION_ERROR);
+    };
+
+    request_sender.send();
+  },
+
+  registrationFailure: function(response, cause) {
+    this.ua.emit('registrationFailed', this.ua, {
+      response: response || null,
+      cause: cause
+    });
+
+    if (this.registered) {
+      this.registered = false;
+      this.ua.emit('unregistered', this.ua, {
+        response: response || null,
+        cause: cause
+      });
+    }
+  },
+
+  unregistered: function(response, cause) {
+    this.registered = false;
+    this.ua.emit('unregistered', this.ua, {
+      response: response || null,
+      cause: cause || null
+    });
+  },
+
+  onTransportClosed: function() {
+    if (this.registrationTimer !== null) {
+      clearTimeout(this.registrationTimer);
+      this.registrationTimer = null;
+    }
+
+    if(this.registered) {
+      this.registered = false;
+      this.ua.emit('unregistered', this.ua);
+    }
+  },
+
+  close: function() {
+    if (this.registered) {
+      this.unregister();
+    }
+  }
+};
+
+</pre>
+	</article>
+</section>
+
+
+
+
+
+				</div>
+
+				<div class="clearfix"></div>
+				<footer>
+					
+					
+		<span class="copyright">
+		Copyright (c) 2012-2014 Versatica
+		</span>
+					<br />
+					
+		<span class="jsdoc-message">
+		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a>
+		on Sun Nov 9th 2014 using the <a
+			href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		</span>
+				</footer>
+			</div>
+
+			
+			<br clear="both">
+		</div>
+
+	</div>
+	<!--<script src="scripts/sunlight.js"></script>-->
+	<script src="scripts/docstrap.lib.js"></script>
+	<script src="scripts/bootstrap-dropdown.js"></script>
+	<script src="scripts/toc.js"></script>
+
+	<script>
+		$( function () {
+			$( "[id*='$']" ).each( function () {
+				var $this = $( this );
+
+				$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+			} );
+
+			$( "#toc" ).toc( {
+				anchorName  : function ( i, heading, prefix ) {
+					return $( heading ).attr( "id" ) || ( prefix + i );
+				},
+				selectors   : "h1,h2,h3,h4",
+				showAndHide : false,
+				scrollTo    : "100px"
+			} );
+
+			$( "#toc>ul" ).addClass( "nav nav-pills nav-stacked" );
+			$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+			$( '.dropdown-toggle' ).dropdown();
+//			$( ".tutorial-section pre, .readme-section pre" ).addClass( "sunlight-highlight-javascript" ).addClass( "linenums" );
+
+			$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+				var $this = $( this );
+
+				var example = $this.find( "code" );
+				exampleText = example.html();
+				var lang = /{@lang (.*?)}/.exec( exampleText );
+				if ( lang && lang[1] ) {
+					exampleText = exampleText.replace( lang[0], "" );
+					example.html( exampleText );
+					lang = lang[1];
+				} else {
+					lang = "javascript";
+				}
+
+				if ( lang ) {
+
+					$this
+						.addClass( "sunlight-highlight-" + lang )
+						.addClass( "linenums" )
+						.html( example.html() );
+
+				}
+			} );
+
+			Sunlight.highlightAll( {
+				lineNumbers : true,
+				showMenu : true,
+				enableDoclinks : true
+			} );
+		} );
+	 </script>
+
+
+
+	<!--Navigation and Symbol Display-->
+	
+
+
+	<!--Google Analytics-->
+	
+
+</body>
+</html>

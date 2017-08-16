@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>JsSIP Source: SIPMessage.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
+
+</head>
+
+<body>
+<div class="container-fluid">
+	<div class="navbar navbar-fixed-top navbar-inverse">
+		<div class="navbar-inner">
+			<a class="brand" href="index.html">JsSIP</a>
+			<ul class="nav">
+				
+				<li class="dropdown">
+					<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="JsSIP.html">JsSIP</a>
+						</li>
+						
+						<li>
+							<a href="JsSIP.Exceptions.html">JsSIP.Exceptions</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="JsSIP.Exceptions.ConfigurationError.html">JsSIP.Exceptions.ConfigurationError</a>
+						</li>
+						
+						<li>
+							<a href="JsSIP.UA.html">JsSIP.UA</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="global.html#checkTransaction">checkTransaction</a>
+						</li>
+						
+						<li>
+							<a href="global.html#debug">debug</a>
+						</li>
+						
+						<li>
+							<a href="global.html#debugnict">debugnict</a>
+						</li>
+						
+						<li>
+							<a href="global.html#getHeader">getHeader</a>
+						</li>
+						
+						<li>
+							<a href="global.html#JsSIP_C">JsSIP_C</a>
+						</li>
+						
+						<li>
+							<a href="global.html#OutgoingRequest">OutgoingRequest</a>
+						</li>
+						
+						<li>
+							<a href="global.html#URI">URI</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+			</ul>
+		</div>
+	</div>
+
+	<div class="row-fluid">
+
+		
+			<div class="span12">
+				
+				<div id="main">
+					
+
+
+		<h1 class="page-title">Source: SIPMessage.js</h1>
+    
+<section>
+	<article>
+		<pre
+			class="sunlight-highlight-javascript linenums">module.exports = {
+  OutgoingRequest: OutgoingRequest,
+  IncomingRequest: IncomingRequest,
+  IncomingResponse: IncomingResponse
+};
+
+
+/**
+ * Dependencies.
+ */
+var debug = require('debug')('JsSIP:SIPMessage');
+var JsSIP_C = require('./Constants');
+var Utils = require('./Utils');
+var NameAddrHeader = require('./NameAddrHeader');
+var Grammar = require('./Grammar');
+
+
+/**
+ * -param {String} method request method
+ * -param {String} ruri request uri
+ * -param {UA} ua
+ * -param {Object} params parameters that will have priority over ua.configuration parameters:
+ * &lt;br>
+ *  - cseq, call_id, from_tag, from_uri, from_display_name, to_uri, to_tag, route_set
+ * -param {Object} [headers] extra headers
+ * -param {String} [body]
+ */
+function OutgoingRequest(method, ruri, ua, params, extraHeaders, body) {
+  var
+    to,
+    from,
+    call_id,
+    cseq;
+
+  params = params || {};
+
+  // Mandatory parameters check
+  if(!method || !ruri || !ua) {
+    return null;
+  }
+
+  this.ua = ua;
+  this.headers = {};
+  this.method = method;
+  this.ruri = ruri;
+  this.body = body;
+  this.extraHeaders = extraHeaders && extraHeaders.slice() || [];
+
+  // Fill the Common SIP Request Headers
+
+  // Route
+  if (params.route_set) {
+    this.setHeader('route', params.route_set);
+  } else if (ua.configuration.use_preloaded_route){
+    this.setHeader('route', ua.transport.server.sip_uri);
+  }
+
+  // Via
+  // Empty Via header. Will be filled by the client transaction.
+  this.setHeader('via', '');
+
+  // Max-Forwards
+  this.setHeader('max-forwards', JsSIP_C.MAX_FORWARDS);
+
+  // To
+  to = (params.to_display_name || params.to_display_name === 0) ? '"' + params.to_display_name + '" ' : '';
+  to += '&lt;' + (params.to_uri || ruri) + '>';
+  to += params.to_tag ? ';tag=' + params.to_tag : '';
+  this.to = new NameAddrHeader.parse(to);
+  this.setHeader('to', to);
+
+  // From
+  if (params.from_display_name || params.from_display_name === 0) {
+    from = '"' + params.from_display_name + '" ';
+  } else if (ua.configuration.display_name) {
+    from = '"' + ua.configuration.display_name + '" ';
+  } else {
+    from = '';
+  }
+  from += '&lt;' + (params.from_uri || ua.configuration.uri) + '>;tag=';
+  from += params.from_tag || Utils.newTag();
+  this.from = new NameAddrHeader.parse(from);
+  this.setHeader('from', from);
+
+  // Call-ID
+  call_id = params.call_id || (ua.configuration.jssip_id + Utils.createRandomToken(15));
+  this.call_id = call_id;
+  this.setHeader('call-id', call_id);
+
+  // CSeq
+  cseq = params.cseq || Math.floor(Math.random() * 10000);
+  this.cseq = cseq;
+  this.setHeader('cseq', cseq + ' ' + method);
+}
+
+OutgoingRequest.prototype = {
+  /**
+   * Replace the the given header by the given value.
+   * -param {String} name header name
+   * -param {String | Array} value header value
+   */
+  setHeader: function(name, value) {
+    this.headers[Utils.headerize(name)] = (value instanceof Array) ? value : [value];
+  },
+
+  /**
+   * Get the value of the given header name at the given position.
+   * -param {String} name header name
+   * -returns {String|undefined} Returns the specified header, null if header doesn't exist.
+   */
+  getHeader: function(name) {
+    var regexp, idx,
+      length = this.extraHeaders.length,
+      header = this.headers[Utils.headerize(name)];
+
+    if(header) {
+      if(header[0]) {
+        return header[0];
+      }
+    } else {
+      regexp = new RegExp('^\\s*'+ name +'\\s*:','i');
+      for (idx=0; idx&lt;length; idx++) {
+        header = this.extraHeaders[idx];
+        if (regexp.test(header)) {
+          return header.substring(header.indexOf(':')+1).trim();
+        }
+      }
+    }
+
+    return;
+  },
+
+  /**
+   * Get the header/s of the given name.
+   * -param {String} name header name
+   * -returns {Array} Array with all the headers of the specified name.
+   */
+  getHeaders: function(name) {
+    var idx, length, regexp,
+      header = this.headers[Utils.headerize(name)],
+      result = [];
+
+    if (header) {
+      length = header.length;
+      for (idx = 0; idx &lt; length; idx++) {
+        result.push(header[idx]);
+      }
+      return result;
+    } else {
+      length = this.extraHeaders.length;
+      regexp = new RegExp('^\\s*'+ name +'\\s*:','i');
+      for (idx=0; idx&lt;length; idx++) {
+        header = this.extraHeaders[idx];
+        if (regexp.test(header)) {
+          result.push(header.substring(header.indexOf(':')+1).trim());
+        }
+      }
+      return result;
+    }
+  },
+
+  /**
+   * Verify the existence of the given header.
+   * -param {String} name header name
+   * -returns {boolean} true if header with given name exists, false otherwise
+   */
+  hasHeader: function(name) {
+    var regexp, idx,
+      length = this.extraHeaders.length;
+
+    if (this.headers[Utils.headerize(name)]) {
+      return true;
+    } else {
+      regexp = new RegExp('^\\s*'+ name +'\\s*:','i');
+      for (idx=0; idx&lt;length; idx++) {
+        if (regexp.test(this.extraHeaders[idx])) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  },
+
+  toString: function() {
+    var msg = '', header, length, idx,
+      supported = [];
+
+    msg += this.method + ' ' + this.ruri + ' SIP/2.0\r\n';
+
+    for (header in this.headers) {
+      length = this.headers[header].length;
+      for (idx = 0; idx &lt; length; idx++) {
+        msg += header + ': ' + this.headers[header][idx] + '\r\n';
+      }
+    }
+
+    length = this.extraHeaders.length;
+    for (idx = 0; idx &lt; length; idx++) {
+      msg += this.extraHeaders[idx].trim() +'\r\n';
+    }
+
+    // Supported
+    switch (this.method) {
+      case JsSIP_C.REGISTER:
+        supported.push('path', 'gruu');
+        break;
+      case JsSIP_C.INVITE:
+        if (this.ua.contact.pub_gruu || this.ua.contact.temp_gruu) {
+          supported.push('gruu');
+        }
+        break;
+    }
+
+    supported.push('outbound');
+
+    // Allow
+    msg += 'Allow: '+ JsSIP_C.ALLOWED_METHODS +'\r\n';
+
+    msg += 'Supported: ' +  supported +'\r\n';
+    msg += 'User-Agent: ' + JsSIP_C.USER_AGENT +'\r\n';
+
+    if(this.body) {
+      length = Utils.str_utf8_length(this.body);
+      msg += 'Content-Length: ' + length + '\r\n\r\n';
+      msg += this.body;
+    } else {
+      msg += 'Content-Length: 0\r\n\r\n';
+    }
+
+    return msg;
+  }
+};
+
+
+function IncomingMessage(){
+  this.data = null;
+  this.headers = null;
+  this.method =  null;
+  this.via = null;
+  this.via_branch = null;
+  this.call_id = null;
+  this.cseq = null;
+  this.from = null;
+  this.from_tag = null;
+  this.to = null;
+  this.to_tag = null;
+  this.body = null;
+}
+
+IncomingMessage.prototype = {
+  /**
+  * Insert a header of the given name and value into the last position of the
+  * header array.
+  */
+  addHeader: function(name, value) {
+    var header = { raw: value };
+
+    name = Utils.headerize(name);
+
+    if(this.headers[name]) {
+      this.headers[name].push(header);
+    } else {
+      this.headers[name] = [header];
+    }
+  },
+
+  /**
+   * Get the value of the given header name at the given position.
+   */
+  getHeader: function(name) {
+    var header = this.headers[Utils.headerize(name)];
+
+    if(header) {
+      if(header[0]) {
+        return header[0].raw;
+      }
+    } else {
+      return;
+    }
+  },
+
+  /**
+   * Get the header/s of the given name.
+   */
+  getHeaders: function(name) {
+    var idx, length,
+      header = this.headers[Utils.headerize(name)],
+      result = [];
+
+    if(!header) {
+      return [];
+    }
+
+    length = header.length;
+    for (idx = 0; idx &lt; length; idx++) {
+      result.push(header[idx].raw);
+    }
+
+    return result;
+  },
+
+  /**
+   * Verify the existence of the given header.
+   */
+  hasHeader: function(name) {
+    return(this.headers[Utils.headerize(name)]) ? true : false;
+  },
+
+  /**
+  * Parse the given header on the given index.
+  * -param {String} name header name
+  * -param {Number} [idx=0] header index
+  * -returns {Object|undefined} Parsed header object, undefined if the header is not present or in case of a parsing error.
+  */
+  parseHeader: function(name, idx) {
+    var header, value, parsed;
+
+    name = Utils.headerize(name);
+
+    idx = idx || 0;
+
+    if(!this.headers[name]) {
+      debug('header "' + name + '" not present');
+      return;
+    } else if(idx >= this.headers[name].length) {
+      debug('not so many "' + name + '" headers present');
+      return;
+    }
+
+    header = this.headers[name][idx];
+    value = header.raw;
+
+    if(header.parsed) {
+      return header.parsed;
+    }
+
+    //substitute '-' by '_' for grammar rule matching.
+    parsed = Grammar.parse(value, name.replace(/-/g, '_'));
+
+    if(parsed === -1) {
+      this.headers[name].splice(idx, 1); //delete from headers
+      debug('error parsing "' + name + '" header field with value "' + value + '"');
+      return;
+    } else {
+      header.parsed = parsed;
+      return parsed;
+    }
+  },
+
+  /**
+   * Message Header attribute selector. Alias of parseHeader.
+   * -param {String} name header name
+   * -param {Number} [idx=0] header index
+   * -returns {Object|undefined} Parsed header object, undefined if the header is not present or in case of a parsing error.
+   *
+   * -example
+   * message.s('via',3).port
+   */
+  s: function(name, idx) {
+    return this.parseHeader(name, idx);
+  },
+
+  /**
+  * Replace the value of the given header by the value.
+  * -param {String} name header name
+  * -param {String} value header value
+  */
+  setHeader: function(name, value) {
+    var header = { raw: value };
+    this.headers[Utils.headerize(name)] = [header];
+  },
+
+  toString: function() {
+    return this.data;
+  }
+};
+
+
+function IncomingRequest(ua) {
+  this.ua = ua;
+  this.headers = {};
+  this.ruri = null;
+  this.transport = null;
+  this.server_transaction = null;
+}
+
+IncomingRequest.prototype = new IncomingMessage();
+
+/**
+* Stateful reply.
+* -param {Number} code status code
+* -param {String} reason reason phrase
+* -param {Object} headers extra headers
+* -param {String} body body
+* -param {Function} [onSuccess] onSuccess callback
+* -param {Function} [onFailure] onFailure callback
+*/
+IncomingRequest.prototype.reply = function(code, reason, extraHeaders, body, onSuccess, onFailure) {
+  var rr, vias, length, idx, response,
+    supported = [],
+    to = this.getHeader('To'),
+    r = 0,
+    v = 0;
+
+  code = code || null;
+  reason = reason || null;
+
+  // Validate code and reason values
+  if (!code || (code &lt; 100 || code > 699)) {
+    throw new TypeError('Invalid status_code: '+ code);
+  } else if (reason && typeof reason !== 'string' && !(reason instanceof String)) {
+    throw new TypeError('Invalid reason_phrase: '+ reason);
+  }
+
+  reason = reason || JsSIP_C.REASON_PHRASE[code] || '';
+  extraHeaders = extraHeaders && extraHeaders.slice() || [];
+
+  response = 'SIP/2.0 ' + code + ' ' + reason + '\r\n';
+
+  if(this.method === JsSIP_C.INVITE && code > 100 && code &lt;= 200) {
+    rr = this.getHeaders('record-route');
+    length = rr.length;
+
+    for(r; r &lt; length; r++) {
+      response += 'Record-Route: ' + rr[r] + '\r\n';
+    }
+  }
+
+  vias = this.getHeaders('via');
+  length = vias.length;
+
+  for(v; v &lt; length; v++) {
+    response += 'Via: ' + vias[v] + '\r\n';
+  }
+
+  if(!this.to_tag && code > 100) {
+    to += ';tag=' + Utils.newTag();
+  } else if(this.to_tag && !this.s('to').hasParam('tag')) {
+    to += ';tag=' + this.to_tag;
+  }
+
+  response += 'To: ' + to + '\r\n';
+  response += 'From: ' + this.getHeader('From') + '\r\n';
+  response += 'Call-ID: ' + this.call_id + '\r\n';
+  response += 'CSeq: ' + this.cseq + ' ' + this.method + '\r\n';
+
+  length = extraHeaders.length;
+  for (idx = 0; idx &lt; length; idx++) {
+    response += extraHeaders[idx].trim() +'\r\n';
+  }
+
+  // Supported
+  switch (this.method) {
+    case JsSIP_C.INVITE:
+      if (this.ua.contact.pub_gruu || this.ua.contact.temp_gruu) {
+        supported.push('gruu');
+      }
+      break;
+  }
+
+  supported.push('outbound');
+
+  // Allow and Accept
+  if (this.method === JsSIP_C.OPTIONS) {
+    response += 'Allow: '+ JsSIP_C.ALLOWED_METHODS +'\r\n';
+    response += 'Accept: '+ JsSIP_C.ACCEPTED_BODY_TYPES +'\r\n';
+  } else if (code === 405) {
+    response += 'Allow: '+ JsSIP_C.ALLOWED_METHODS +'\r\n';
+  } else if (code === 415 ) {
+    response += 'Accept: '+ JsSIP_C.ACCEPTED_BODY_TYPES +'\r\n';
+  }
+
+  response += 'Supported: ' +  supported +'\r\n';
+
+  if(body) {
+    length = Utils.str_utf8_length(body);
+    response += 'Content-Type: application/sdp\r\n';
+    response += 'Content-Length: ' + length + '\r\n\r\n';
+    response += body;
+  } else {
+    response += 'Content-Length: ' + 0 + '\r\n\r\n';
+  }
+
+  this.server_transaction.receiveResponse(code, response, onSuccess, onFailure);
+};
+
+/**
+* Stateless reply.
+* -param {Number} code status code
+* -param {String} reason reason phrase
+*/
+IncomingRequest.prototype.reply_sl = function(code, reason) {
+  var to, response,
+    v = 0,
+    vias = this.getHeaders('via'),
+    length = vias.length;
+
+  code = code || null;
+  reason = reason || null;
+
+  // Validate code and reason values
+  if (!code || (code &lt; 100 || code > 699)) {
+    throw new TypeError('Invalid status_code: '+ code);
+  } else if (reason && typeof reason !== 'string' && !(reason instanceof String)) {
+    throw new TypeError('Invalid reason_phrase: '+ reason);
+  }
+
+  reason = reason || JsSIP_C.REASON_PHRASE[code] || '';
+
+  response = 'SIP/2.0 ' + code + ' ' + reason + '\r\n';
+
+  for(v; v &lt; length; v++) {
+    response += 'Via: ' + vias[v] + '\r\n';
+  }
+
+  to = this.getHeader('To');
+
+  if(!this.to_tag && code > 100) {
+    to += ';tag=' + Utils.newTag();
+  } else if(this.to_tag && !this.s('to').hasParam('tag')) {
+    to += ';tag=' + this.to_tag;
+  }
+
+  response += 'To: ' + to + '\r\n';
+  response += 'From: ' + this.getHeader('From') + '\r\n';
+  response += 'Call-ID: ' + this.call_id + '\r\n';
+  response += 'CSeq: ' + this.cseq + ' ' + this.method + '\r\n';
+  response += 'Content-Length: ' + 0 + '\r\n\r\n';
+
+  this.transport.send(response);
+};
+
+
+function IncomingResponse() {
+  this.headers = {};
+  this.status_code = null;
+  this.reason_phrase = null;
+}
+
+IncomingResponse.prototype = new IncomingMessage();
+</pre>
+	</article>
+</section>
+
+
+
+
+
+				</div>
+
+				<div class="clearfix"></div>
+				<footer>
+					
+					
+		<span class="copyright">
+		Copyright (c) 2012-2014 Versatica
+		</span>
+					<br />
+					
+		<span class="jsdoc-message">
+		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a>
+		on Sun Nov 9th 2014 using the <a
+			href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		</span>
+				</footer>
+			</div>
+
+			
+			<br clear="both">
+		</div>
+
+	</div>
+	<!--<script src="scripts/sunlight.js"></script>-->
+	<script src="scripts/docstrap.lib.js"></script>
+	<script src="scripts/bootstrap-dropdown.js"></script>
+	<script src="scripts/toc.js"></script>
+
+	<script>
+		$( function () {
+			$( "[id*='$']" ).each( function () {
+				var $this = $( this );
+
+				$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+			} );
+
+			$( "#toc" ).toc( {
+				anchorName  : function ( i, heading, prefix ) {
+					return $( heading ).attr( "id" ) || ( prefix + i );
+				},
+				selectors   : "h1,h2,h3,h4",
+				showAndHide : false,
+				scrollTo    : "100px"
+			} );
+
+			$( "#toc>ul" ).addClass( "nav nav-pills nav-stacked" );
+			$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+			$( '.dropdown-toggle' ).dropdown();
+//			$( ".tutorial-section pre, .readme-section pre" ).addClass( "sunlight-highlight-javascript" ).addClass( "linenums" );
+
+			$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+				var $this = $( this );
+
+				var example = $this.find( "code" );
+				exampleText = example.html();
+				var lang = /{@lang (.*?)}/.exec( exampleText );
+				if ( lang && lang[1] ) {
+					exampleText = exampleText.replace( lang[0], "" );
+					example.html( exampleText );
+					lang = lang[1];
+				} else {
+					lang = "javascript";
+				}
+
+				if ( lang ) {
+
+					$this
+						.addClass( "sunlight-highlight-" + lang )
+						.addClass( "linenums" )
+						.html( example.html() );
+
+				}
+			} );
+
+			Sunlight.highlightAll( {
+				lineNumbers : true,
+				showMenu : true,
+				enableDoclinks : true
+			} );
+		} );
+	 </script>
+
+
+
+	<!--Navigation and Symbol Display-->
+	
+
+
+	<!--Google Analytics-->
+	
+
+</body>
+</html>

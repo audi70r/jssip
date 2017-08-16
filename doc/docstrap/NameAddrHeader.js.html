@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>JsSIP Source: NameAddrHeader.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
+
+</head>
+
+<body>
+<div class="container-fluid">
+	<div class="navbar navbar-fixed-top navbar-inverse">
+		<div class="navbar-inner">
+			<a class="brand" href="index.html">JsSIP</a>
+			<ul class="nav">
+				
+				<li class="dropdown">
+					<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="JsSIP.html">JsSIP</a>
+						</li>
+						
+						<li>
+							<a href="JsSIP.Exceptions.html">JsSIP.Exceptions</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="JsSIP.Exceptions.ConfigurationError.html">JsSIP.Exceptions.ConfigurationError</a>
+						</li>
+						
+						<li>
+							<a href="JsSIP.UA.html">JsSIP.UA</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="global.html#checkTransaction">checkTransaction</a>
+						</li>
+						
+						<li>
+							<a href="global.html#debug">debug</a>
+						</li>
+						
+						<li>
+							<a href="global.html#debugnict">debugnict</a>
+						</li>
+						
+						<li>
+							<a href="global.html#getHeader">getHeader</a>
+						</li>
+						
+						<li>
+							<a href="global.html#JsSIP_C">JsSIP_C</a>
+						</li>
+						
+						<li>
+							<a href="global.html#OutgoingRequest">OutgoingRequest</a>
+						</li>
+						
+						<li>
+							<a href="global.html#URI">URI</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+			</ul>
+		</div>
+	</div>
+
+	<div class="row-fluid">
+
+		
+			<div class="span12">
+				
+				<div id="main">
+					
+
+
+		<h1 class="page-title">Source: NameAddrHeader.js</h1>
+    
+<section>
+	<article>
+		<pre
+			class="sunlight-highlight-javascript linenums">module.exports = NameAddrHeader;
+
+
+/**
+ * Dependencies.
+ */
+var URI = require('./URI');
+var Grammar = require('./Grammar');
+
+
+function NameAddrHeader(uri, display_name, parameters) {
+  var param;
+
+  // Checks
+  if(!uri || !(uri instanceof URI)) {
+    throw new TypeError('missing or invalid "uri" parameter');
+  }
+
+  // Initialize parameters
+  this.uri = uri;
+  this.parameters = {};
+
+  for (param in parameters) {
+    this.setParam(param, parameters[param]);
+  }
+
+  Object.defineProperties(this, {
+    display_name: {
+      get: function() { return display_name; },
+      set: function(value) {
+        display_name = (value === 0) ? '0' : value;
+      }
+    }
+  });
+}
+
+NameAddrHeader.prototype = {
+  setParam: function(key, value) {
+    if (key) {
+      this.parameters[key.toLowerCase()] = (typeof value === 'undefined' || value === null) ? null : value.toString();
+    }
+  },
+
+  getParam: function(key) {
+    if(key) {
+      return this.parameters[key.toLowerCase()];
+    }
+  },
+
+  hasParam: function(key) {
+    if(key) {
+      return (this.parameters.hasOwnProperty(key.toLowerCase()) && true) || false;
+    }
+  },
+
+  deleteParam: function(parameter) {
+    var value;
+    parameter = parameter.toLowerCase();
+    if (this.parameters.hasOwnProperty(parameter)) {
+      value = this.parameters[parameter];
+      delete this.parameters[parameter];
+      return value;
+    }
+  },
+
+  clearParams: function() {
+    this.parameters = {};
+  },
+
+  clone: function() {
+    return new NameAddrHeader(
+      this.uri.clone(),
+      this.display_name,
+      JSON.parse(JSON.stringify(this.parameters)));
+  },
+
+  toString: function() {
+    var body, parameter;
+
+    body  = (this.display_name || this.display_name === 0) ? '"' + this.display_name + '" ' : '';
+    body += '&lt;' + this.uri.toString() + '>';
+
+    for (parameter in this.parameters) {
+      body += ';' + parameter;
+
+      if (this.parameters[parameter] !== null) {
+        body += '='+ this.parameters[parameter];
+      }
+    }
+
+    return body;
+  }
+};
+
+
+/**
+  * Parse the given string and returns a NameAddrHeader instance or undefined if
+  * it is an invalid NameAddrHeader.
+  */
+NameAddrHeader.parse = function(name_addr_header) {
+  name_addr_header = Grammar.parse(name_addr_header,'Name_Addr_Header');
+
+  if (name_addr_header !== -1) {
+    return name_addr_header;
+  } else {
+    return undefined;
+  }
+};
+</pre>
+	</article>
+</section>
+
+
+
+
+
+				</div>
+
+				<div class="clearfix"></div>
+				<footer>
+					
+					
+		<span class="copyright">
+		Copyright (c) 2012-2014 Versatica
+		</span>
+					<br />
+					
+		<span class="jsdoc-message">
+		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a>
+		on Sun Nov 9th 2014 using the <a
+			href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		</span>
+				</footer>
+			</div>
+
+			
+			<br clear="both">
+		</div>
+
+	</div>
+	<!--<script src="scripts/sunlight.js"></script>-->
+	<script src="scripts/docstrap.lib.js"></script>
+	<script src="scripts/bootstrap-dropdown.js"></script>
+	<script src="scripts/toc.js"></script>
+
+	<script>
+		$( function () {
+			$( "[id*='$']" ).each( function () {
+				var $this = $( this );
+
+				$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+			} );
+
+			$( "#toc" ).toc( {
+				anchorName  : function ( i, heading, prefix ) {
+					return $( heading ).attr( "id" ) || ( prefix + i );
+				},
+				selectors   : "h1,h2,h3,h4",
+				showAndHide : false,
+				scrollTo    : "100px"
+			} );
+
+			$( "#toc>ul" ).addClass( "nav nav-pills nav-stacked" );
+			$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+			$( '.dropdown-toggle' ).dropdown();
+//			$( ".tutorial-section pre, .readme-section pre" ).addClass( "sunlight-highlight-javascript" ).addClass( "linenums" );
+
+			$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+				var $this = $( this );
+
+				var example = $this.find( "code" );
+				exampleText = example.html();
+				var lang = /{@lang (.*?)}/.exec( exampleText );
+				if ( lang && lang[1] ) {
+					exampleText = exampleText.replace( lang[0], "" );
+					example.html( exampleText );
+					lang = lang[1];
+				} else {
+					lang = "javascript";
+				}
+
+				if ( lang ) {
+
+					$this
+						.addClass( "sunlight-highlight-" + lang )
+						.addClass( "linenums" )
+						.html( example.html() );
+
+				}
+			} );
+
+			Sunlight.highlightAll( {
+				lineNumbers : true,
+				showMenu : true,
+				enableDoclinks : true
+			} );
+		} );
+	 </script>
+
+
+
+	<!--Navigation and Symbol Display-->
+	
+
+
+	<!--Google Analytics-->
+	
+
+</body>
+</html>

@@ -1,0 +1,580 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+AckClientTransaction	Transactions.js	/^function AckClientTransaction(request_sender, request, transport) {$/;"	c
+AckClientTransaction.onTransportError	Transactions.js	/^AckClientTransaction.prototype.onTransportError = function() {$/;"	m
+AckClientTransaction.send	Transactions.js	/^AckClientTransaction.prototype.send = function() {$/;"	m
+C	JsSIP.js	/^var C = require('.\/Constants');$/;"	v
+C.CONFIGURATION_ERROR	UA.js	/^  CONFIGURATION_ERROR:  1,$/;"	p
+C.DEFAULT_DURATION	RTCSession/DTMF.js	/^  DEFAULT_DURATION:        100,$/;"	p
+C.DEFAULT_INTER_TONE_GAP	RTCSession/DTMF.js	/^  DEFAULT_INTER_TONE_GAP:  500$/;"	p
+C.INVITE_CLIENT	Transactions.js	/^  INVITE_CLIENT: 'ict',$/;"	p
+C.INVITE_SERVER	Transactions.js	/^  INVITE_SERVER: 'ist'$/;"	p
+C.MAX_DURATION	RTCSession/DTMF.js	/^  MAX_DURATION:            6000,$/;"	p
+C.MIN_DURATION	RTCSession/DTMF.js	/^  MIN_DURATION:            70,$/;"	p
+C.MIN_INTER_TONE_GAP	RTCSession/DTMF.js	/^  MIN_INTER_TONE_GAP:      50,$/;"	p
+C.NETWORK_ERROR	UA.js	/^  NETWORK_ERROR:        2$/;"	p
+C.NON_INVITE_CLIENT	Transactions.js	/^  NON_INVITE_CLIENT: 'nict',$/;"	p
+C.NON_INVITE_SERVER	Transactions.js	/^  NON_INVITE_SERVER: 'nist',$/;"	p
+C.SOCKET_STATUS_ERROR	Transport.js	/^  SOCKET_STATUS_ERROR:        1,$/;"	p
+C.SOCKET_STATUS_READY	Transport.js	/^  SOCKET_STATUS_READY:        0,$/;"	p
+C.STATUS_1XX_RECEIVED	RTCSession.js	/^  STATUS_1XX_RECEIVED:       2,$/;"	p
+C.STATUS_ACCEPTED	Transactions.js	/^  STATUS_ACCEPTED:   4,$/;"	p
+C.STATUS_ANSWERED	RTCSession.js	/^  STATUS_ANSWERED:           5,$/;"	p
+C.STATUS_CALLING	Transactions.js	/^  STATUS_CALLING:    3,$/;"	p
+C.STATUS_CANCELED	RTCSession.js	/^  STATUS_CANCELED:           7,$/;"	p
+C.STATUS_COMPLETED	Transactions.js	/^  STATUS_COMPLETED:  5,$/;"	p
+C.STATUS_CONFIRMED	Dialog.js	/^  STATUS_CONFIRMED:   2$/;"	p
+C.STATUS_CONFIRMED	RTCSession.js	/^  STATUS_CONFIRMED:          9$/;"	p
+C.STATUS_CONFIRMED	Transactions.js	/^  STATUS_CONFIRMED:  7,$/;"	p
+C.STATUS_CONNECTED	Transport.js	/^  STATUS_CONNECTED:           0,$/;"	p
+C.STATUS_CONNECTING	Transport.js	/^  STATUS_CONNECTING:          1,$/;"	p
+C.STATUS_DISCONNECTED	Transport.js	/^  STATUS_DISCONNECTED:        2,$/;"	p
+C.STATUS_EARLY	Dialog.js	/^  STATUS_EARLY:       1,$/;"	p
+C.STATUS_INIT	UA.js	/^  STATUS_INIT :                0,$/;"	p
+C.STATUS_INVITE_RECEIVED	RTCSession.js	/^  STATUS_INVITE_RECEIVED:    3,$/;"	p
+C.STATUS_INVITE_SENT	RTCSession.js	/^  STATUS_INVITE_SENT:        1,$/;"	p
+C.STATUS_NOT_READY	UA.js	/^  STATUS_NOT_READY:            3,$/;"	p
+C.STATUS_NULL	RTCSession.js	/^  STATUS_NULL:               0,$/;"	p
+C.STATUS_PROCEEDING	Transactions.js	/^  STATUS_PROCEEDING: 2,$/;"	p
+C.STATUS_READY	UA.js	/^  STATUS_READY:                1,$/;"	p
+C.STATUS_TERMINATED	RTCSession.js	/^  STATUS_TERMINATED:         8,$/;"	p
+C.STATUS_TERMINATED	Transactions.js	/^  STATUS_TERMINATED: 6,$/;"	p
+C.STATUS_TRYING	Transactions.js	/^  STATUS_TRYING:     1,$/;"	p
+C.STATUS_USER_CLOSED	UA.js	/^  STATUS_USER_CLOSED:          2,$/;"	p
+C.STATUS_WAITING_FOR_ACK	RTCSession.js	/^  STATUS_WAITING_FOR_ACK:    6,$/;"	p
+C.STATUS_WAITING_FOR_ANSWER	RTCSession.js	/^  STATUS_WAITING_FOR_ANSWER: 4,$/;"	p
+C.USER_AGENT	Constants.js	/^  USER_AGENT: pkg.title + ' ' + pkg.version,$/;"	p
+C.body_type	RTCSession/ReferNotifier.js	/^  body_type: 'message\/sipfrag;version=2.0',$/;"	p
+C.event_type	RTCSession/ReferNotifier.js	/^  event_type: 'refer',$/;"	p
+C.expires	RTCSession/ReferNotifier.js	/^  expires: 300$/;"	p
+C.expires	RTCSession/ReferSubscriber.js	/^  expires: 120$/;"	p
+C.recovery_options	Transport.js	/^  recovery_options: {$/;"	p
+DTMF	RTCSession/DTMF.js	/^function DTMF(session) {$/;"	c
+DTMF.init_incoming	RTCSession/DTMF.js	/^DTMF.prototype.init_incoming = function(request) {$/;"	m
+DTMF.onDialogError	RTCSession/DTMF.js	/^DTMF.prototype.onDialogError = function() {$/;"	m
+DTMF.onRequestTimeout	RTCSession/DTMF.js	/^DTMF.prototype.onRequestTimeout = function() {$/;"	m
+DTMF.onTransportError	RTCSession/DTMF.js	/^DTMF.prototype.onTransportError = function() {$/;"	m
+DTMF.receiveResponse	RTCSession/DTMF.js	/^DTMF.prototype.receiveResponse = function(response) {$/;"	m
+DTMF.send	RTCSession/DTMF.js	/^DTMF.prototype.send = function(tone, options) {$/;"	m
+Dialog	Dialog.js	/^function Dialog(owner, message, type, state) {$/;"	c
+Dialog	RTCSession.js	/^var Dialog = require('.\/Dialog');$/;"	v
+Dialog.checkInDialogRequest	Dialog.js	/^  checkInDialogRequest: function(request) {$/;"	m
+Dialog.createRequest	Dialog.js	/^  createRequest: function(method, extraHeaders, body) {$/;"	m
+Dialog.receiveRequest	Dialog.js	/^  receiveRequest: function(request) {$/;"	m
+Dialog.sendRequest	Dialog.js	/^  sendRequest: function(applicant, method, options) {$/;"	m
+Dialog.terminate	Dialog.js	/^  terminate: function() {$/;"	m
+Dialog.update	Dialog.js	/^  update: function(message, type) {$/;"	m
+DialogRequestSender	Dialog/RequestSender.js	/^function DialogRequestSender(dialog, applicant, request) {$/;"	c
+DialogRequestSender.send	Dialog/RequestSender.js	/^  send: function() {$/;"	m
+Dialog_RequestSender	Dialog.js	/^var Dialog_RequestSender = require('.\/Dialog\/RequestSender');$/;"	v
+DigestAuthentication	DigestAuthentication.js	/^function DigestAuthentication(credentials) {$/;"	c
+DigestAuthentication	RequestSender.js	/^var DigestAuthentication = require('.\/DigestAuthentication');$/;"	v
+DigestAuthentication.authenticate	DigestAuthentication.js	/^DigestAuthentication.prototype.authenticate = function(request, challenge) {$/;"	m
+DigestAuthentication.get	DigestAuthentication.js	/^DigestAuthentication.prototype.get = function(parameter) {$/;"	m
+DigestAuthentication.toString	DigestAuthentication.js	/^DigestAuthentication.prototype.toString = function() {$/;"	m
+Exceptions	JsSIP.js	/^var Exceptions = require('.\/Exceptions');$/;"	v
+Exceptions	Message.js	/^var Exceptions = require('.\/Exceptions');$/;"	v
+Exceptions	RTCSession.js	/^var Exceptions = require('.\/Exceptions');$/;"	v
+Exceptions	RTCSession/DTMF.js	/^var Exceptions = require('..\/Exceptions');$/;"	v
+Exceptions	RTCSession/Request.js	/^var Exceptions = require('..\/Exceptions');$/;"	v
+Exceptions	UA.js	/^var Exceptions = require('.\/Exceptions');$/;"	v
+Exceptions.ConfigurationError	Exceptions.js	/^  ConfigurationError: (function(){$/;"	p
+Grammar	JsSIP.js	/^var Grammar = require('.\/Grammar');$/;"	v
+Grammar	NameAddrHeader.js	/^var Grammar = require('.\/Grammar');$/;"	v
+Grammar	Parser.js	/^var Grammar = require('.\/Grammar');$/;"	v
+Grammar	RTCSession/ReferSubscriber.js	/^var Grammar = require('..\/Grammar');$/;"	v
+Grammar	SIPMessage.js	/^var Grammar = require('.\/Grammar');$/;"	v
+Grammar	Socket.js	/^var Grammar = require('.\/Grammar');$/;"	v
+Grammar	UA.js	/^var Grammar = require('.\/Grammar');$/;"	v
+Grammar	URI.js	/^var Grammar = require('.\/Grammar');$/;"	v
+Grammar	Utils.js	/^var Grammar = require('.\/Grammar');$/;"	v
+Grammar	WebSocketInterface.js	/^var Grammar = require('.\/Grammar');$/;"	v
+IncomingMessage	SIPMessage.js	/^function IncomingMessage(){$/;"	c
+IncomingMessage.addHeader	SIPMessage.js	/^  addHeader: function(name, value) {$/;"	m
+IncomingMessage.addHeader.header.raw	SIPMessage.js	/^    var header = { raw: value };$/;"	p
+IncomingMessage.getHeader	SIPMessage.js	/^  getHeader: function(name) {$/;"	m
+IncomingMessage.getHeaders	SIPMessage.js	/^  getHeaders: function(name) {$/;"	m
+IncomingMessage.hasHeader	SIPMessage.js	/^  hasHeader: function(name) {$/;"	m
+IncomingMessage.parseHeader	SIPMessage.js	/^  parseHeader: function(name, idx) {$/;"	m
+IncomingMessage.parseSDP	SIPMessage.js	/^  parseSDP: function(force) {$/;"	m
+IncomingMessage.s	SIPMessage.js	/^  s: function(name, idx) {$/;"	m
+IncomingMessage.setHeader	SIPMessage.js	/^  setHeader: function(name, value) {$/;"	m
+IncomingMessage.setHeader.header.raw	SIPMessage.js	/^    var header = { raw: value };$/;"	p
+IncomingMessage.toString	SIPMessage.js	/^  toString: function() {$/;"	m
+IncomingRequest	SIPMessage.js	/^function IncomingRequest(ua) {$/;"	c
+IncomingRequest.reply	SIPMessage.js	/^IncomingRequest.prototype.reply = function(code, reason, extraHeaders, body, onSuccess, onFailure) {$/;"	m
+IncomingRequest.reply_sl	SIPMessage.js	/^IncomingRequest.prototype.reply_sl = function(code, reason) {$/;"	m
+IncomingResponse	SIPMessage.js	/^function IncomingResponse() {$/;"	c
+InviteClientTransaction	Transactions.js	/^function InviteClientTransaction(request_sender, request, transport) {$/;"	c
+InviteClientTransaction.cancel_request	Transactions.js	/^InviteClientTransaction.prototype.cancel_request = function(tr, reason) {$/;"	m
+InviteClientTransaction.onTransportError	Transactions.js	/^InviteClientTransaction.prototype.onTransportError = function() {$/;"	m
+InviteClientTransaction.receiveResponse	Transactions.js	/^InviteClientTransaction.prototype.receiveResponse = function(response) {$/;"	m
+InviteClientTransaction.request	Transactions.js	/^  this.request.cancel = function(reason) {$/;"	m
+InviteClientTransaction.send	Transactions.js	/^InviteClientTransaction.prototype.send = function() {$/;"	m
+InviteClientTransaction.sendACK	Transactions.js	/^InviteClientTransaction.prototype.sendACK = function(response) {$/;"	m
+InviteClientTransaction.stateChanged	Transactions.js	/^InviteClientTransaction.prototype.stateChanged = function(state) {$/;"	m
+InviteClientTransaction.timer_B	Transactions.js	/^InviteClientTransaction.prototype.timer_B = function() {$/;"	m
+InviteClientTransaction.timer_D	Transactions.js	/^InviteClientTransaction.prototype.timer_D = function() {$/;"	m
+InviteClientTransaction.timer_M	Transactions.js	/^InviteClientTransaction.prototype.timer_M = function() {$/;"	m
+InviteServerTransaction	Transactions.js	/^function InviteServerTransaction(request, ua) {$/;"	c
+InviteServerTransaction.onTransportError	Transactions.js	/^InviteServerTransaction.prototype.onTransportError = function() {$/;"	m
+InviteServerTransaction.receiveResponse	Transactions.js	/^InviteServerTransaction.prototype.receiveResponse = function(status_code, response, onSuccess, onFailure) {$/;"	m
+InviteServerTransaction.resend_provisional	Transactions.js	/^InviteServerTransaction.prototype.resend_provisional = function() {$/;"	m
+InviteServerTransaction.stateChanged	Transactions.js	/^InviteServerTransaction.prototype.stateChanged = function(state) {$/;"	m
+InviteServerTransaction.timer_H	Transactions.js	/^InviteServerTransaction.prototype.timer_H = function() {$/;"	m
+InviteServerTransaction.timer_I	Transactions.js	/^InviteServerTransaction.prototype.timer_I = function() {$/;"	m
+InviteServerTransaction.timer_L	Transactions.js	/^InviteServerTransaction.prototype.timer_L = function() {$/;"	m
+JsSIP_C	Dialog.js	/^var JsSIP_C = require('.\/Constants');$/;"	v
+JsSIP_C	Dialog/RequestSender.js	/^var JsSIP_C = require('..\/Constants');$/;"	v
+JsSIP_C	Message.js	/^var JsSIP_C = require('.\/Constants');$/;"	v
+JsSIP_C	RTCSession.js	/^var JsSIP_C = require('.\/Constants');$/;"	v
+JsSIP_C	RTCSession/DTMF.js	/^var JsSIP_C = require('..\/Constants');$/;"	v
+JsSIP_C	RTCSession/ReferNotifier.js	/^var JsSIP_C = require('..\/Constants');$/;"	v
+JsSIP_C	RTCSession/ReferSubscriber.js	/^var JsSIP_C = require('..\/Constants');$/;"	v
+JsSIP_C	RTCSession/Request.js	/^var JsSIP_C = require('..\/Constants');$/;"	v
+JsSIP_C	Registrator.js	/^var JsSIP_C = require('.\/Constants');$/;"	v
+JsSIP_C	RequestSender.js	/^var JsSIP_C = require('.\/Constants');$/;"	v
+JsSIP_C	SIPMessage.js	/^var JsSIP_C = require('.\/Constants');$/;"	v
+JsSIP_C	Transactions.js	/^var JsSIP_C = require('.\/Constants');$/;"	v
+JsSIP_C	UA.js	/^var JsSIP_C = require('.\/Constants');$/;"	v
+JsSIP_C	URI.js	/^var JsSIP_C = require('.\/Constants');$/;"	v
+JsSIP_C	Utils.js	/^var JsSIP_C = require('.\/Constants');$/;"	v
+JsSIP_C	sanityCheck.js	/^var JsSIP_C = require('.\/Constants');$/;"	v
+Message	Message.js	/^function Message(ua) {$/;"	c
+Message	UA.js	/^var Message = require('.\/Message');$/;"	v
+Message.accept	Message.js	/^Message.prototype.accept = function(options) {$/;"	m
+Message.close	Message.js	/^Message.prototype.close = function() {$/;"	m
+Message.init_incoming	Message.js	/^Message.prototype.init_incoming = function(request) {$/;"	m
+Message.newMessage	Message.js	/^Message.prototype.newMessage = function(originator, request) {$/;"	m
+Message.onRequestTimeout	Message.js	/^Message.prototype.onRequestTimeout = function() {$/;"	m
+Message.onTransportError	Message.js	/^Message.prototype.onTransportError = function() {$/;"	m
+Message.receiveResponse	Message.js	/^Message.prototype.receiveResponse = function(response) {$/;"	m
+Message.reject	Message.js	/^Message.prototype.reject = function(options) {$/;"	m
+Message.send	Message.js	/^Message.prototype.send = function(target, body, options) {$/;"	m
+NameAddrHeader	JsSIP.js	/^var NameAddrHeader = require('.\/NameAddrHeader');$/;"	v
+NameAddrHeader	NameAddrHeader.js	/^function NameAddrHeader(uri, display_name, parameters) {$/;"	c
+NameAddrHeader	SIPMessage.js	/^var NameAddrHeader = require('.\/NameAddrHeader');$/;"	v
+NameAddrHeader.clearParams	NameAddrHeader.js	/^  clearParams: function() {$/;"	m
+NameAddrHeader.clone	NameAddrHeader.js	/^  clone: function() {$/;"	m
+NameAddrHeader.deleteParam	NameAddrHeader.js	/^  deleteParam: function(parameter) {$/;"	m
+NameAddrHeader.getParam	NameAddrHeader.js	/^  getParam: function(key) {$/;"	m
+NameAddrHeader.hasParam	NameAddrHeader.js	/^  hasParam: function(key) {$/;"	m
+NameAddrHeader.parse	NameAddrHeader.js	/^NameAddrHeader.parse = function(name_addr_header) {$/;"	f
+NameAddrHeader.setParam	NameAddrHeader.js	/^  setParam: function(key, value) {$/;"	m
+NameAddrHeader.toString	NameAddrHeader.js	/^  toString: function() {$/;"	m
+NonInviteClientTransaction	Transactions.js	/^function NonInviteClientTransaction(request_sender, request, transport) {$/;"	c
+NonInviteClientTransaction.onTransportError	Transactions.js	/^NonInviteClientTransaction.prototype.onTransportError = function() {$/;"	m
+NonInviteClientTransaction.receiveResponse	Transactions.js	/^NonInviteClientTransaction.prototype.receiveResponse = function(response) {$/;"	m
+NonInviteClientTransaction.send	Transactions.js	/^NonInviteClientTransaction.prototype.send = function() {$/;"	m
+NonInviteClientTransaction.stateChanged	Transactions.js	/^NonInviteClientTransaction.prototype.stateChanged = function(state) {$/;"	m
+NonInviteClientTransaction.timer_F	Transactions.js	/^NonInviteClientTransaction.prototype.timer_F = function() {$/;"	m
+NonInviteClientTransaction.timer_K	Transactions.js	/^NonInviteClientTransaction.prototype.timer_K = function() {$/;"	m
+NonInviteServerTransaction	Transactions.js	/^function NonInviteServerTransaction(request, ua) {$/;"	c
+NonInviteServerTransaction.onTransportError	Transactions.js	/^NonInviteServerTransaction.prototype.onTransportError = function() {$/;"	m
+NonInviteServerTransaction.receiveResponse	Transactions.js	/^NonInviteServerTransaction.prototype.receiveResponse = function(status_code, response, onSuccess, onFailure) {$/;"	m
+NonInviteServerTransaction.stateChanged	Transactions.js	/^NonInviteServerTransaction.prototype.stateChanged = function(state) {$/;"	m
+NonInviteServerTransaction.timer_J	Transactions.js	/^NonInviteServerTransaction.prototype.timer_J = function() {$/;"	m
+OutgoingRequest	SIPMessage.js	/^function OutgoingRequest(method, ruri, ua, params, extraHeaders, body) {$/;"	c
+OutgoingRequest.getHeader	SIPMessage.js	/^  getHeader: function(name) {$/;"	m
+OutgoingRequest.getHeaders	SIPMessage.js	/^  getHeaders: function(name) {$/;"	m
+OutgoingRequest.hasHeader	SIPMessage.js	/^  hasHeader: function(name) {$/;"	m
+OutgoingRequest.parseSDP	SIPMessage.js	/^  parseSDP: function(force) {$/;"	m
+OutgoingRequest.setHeader	SIPMessage.js	/^  setHeader: function(name, value) {$/;"	m
+OutgoingRequest.toString	SIPMessage.js	/^  toString: function() {$/;"	m
+Parser	UA.js	/^var Parser = require('.\/Parser');$/;"	v
+Parser.parseMessage	Parser.js	/^Parser.parseMessage = function(data, ua) {$/;"	f
+RTCSession	Dialog/RequestSender.js	/^var RTCSession = require('..\/RTCSession');$/;"	v
+RTCSession	RTCSession.js	/^function RTCSession(ua) {$/;"	c
+RTCSession	RTCSession/DTMF.js	/^var RTCSession = require('..\/RTCSession');$/;"	v
+RTCSession	RTCSession/Request.js	/^var RTCSession = require('..\/RTCSession');$/;"	v
+RTCSession	UA.js	/^var RTCSession = require('.\/RTCSession');$/;"	v
+RTCSession.answer	RTCSession.js	/^RTCSession.prototype.answer = function(options) {$/;"	m
+RTCSession.close	RTCSession.js	/^RTCSession.prototype.close = function() {$/;"	m
+RTCSession.connect	RTCSession.js	/^RTCSession.prototype.connect = function(target, options, initCallback) {$/;"	m
+RTCSession.hold	RTCSession.js	/^RTCSession.prototype.hold = function(options, done) {$/;"	m
+RTCSession.init_incoming	RTCSession.js	/^RTCSession.prototype.init_incoming = function(request, initCallback) {$/;"	m
+RTCSession.isEnded	RTCSession.js	/^RTCSession.prototype.isEnded = function() {$/;"	m
+RTCSession.isEstablished	RTCSession.js	/^RTCSession.prototype.isEstablished = function() {$/;"	m
+RTCSession.isInProgress	RTCSession.js	/^RTCSession.prototype.isInProgress = function() {$/;"	m
+RTCSession.isMuted	RTCSession.js	/^RTCSession.prototype.isMuted = function() {$/;"	m
+RTCSession.isOnHold	RTCSession.js	/^RTCSession.prototype.isOnHold = function() {$/;"	m
+RTCSession.isReadyToReOffer	RTCSession.js	/^ RTCSession.prototype.isReadyToReOffer = function() {$/;"	m
+RTCSession.mute	RTCSession.js	/^RTCSession.prototype.mute = function(options) {$/;"	m
+RTCSession.newDTMF	RTCSession.js	/^RTCSession.prototype.newDTMF = function(data) {$/;"	m
+RTCSession.onDialogError	RTCSession.js	/^RTCSession.prototype.onDialogError = function() {$/;"	m
+RTCSession.onRequestTimeout	RTCSession.js	/^RTCSession.prototype.onRequestTimeout = function() {$/;"	m
+RTCSession.onTransportError	RTCSession.js	/^RTCSession.prototype.onTransportError = function() {$/;"	m
+RTCSession.receiveRequest	RTCSession.js	/^RTCSession.prototype.receiveRequest = function(request) {$/;"	m
+RTCSession.refer	RTCSession.js	/^RTCSession.prototype.refer = function(target, options) {$/;"	m
+RTCSession.renegotiate	RTCSession.js	/^RTCSession.prototype.renegotiate = function(options, done) {$/;"	m
+RTCSession.resetLocalMedia	RTCSession.js	/^RTCSession.prototype.resetLocalMedia = function() {$/;"	m
+RTCSession.sendDTMF	RTCSession.js	/^RTCSession.prototype.sendDTMF = function(tones, options) {$/;"	m
+RTCSession.sessionTimers.enabled	RTCSession.js	/^    enabled: this.ua.configuration.session_timers,$/;"	p
+RTCSession.terminate	RTCSession.js	/^RTCSession.prototype.terminate = function(options) {$/;"	m
+RTCSession.timers.ackTimer	RTCSession.js	/^    ackTimer: null,$/;"	p
+RTCSession.timers.expiresTimer	RTCSession.js	/^    expiresTimer: null,$/;"	p
+RTCSession.timers.invite2xxTimer	RTCSession.js	/^    invite2xxTimer: null,$/;"	p
+RTCSession.timers.userNoAnswerTimer	RTCSession.js	/^    userNoAnswerTimer: null$/;"	p
+RTCSession.unhold	RTCSession.js	/^RTCSession.prototype.unhold = function(options, done) {$/;"	m
+RTCSession.unmute	RTCSession.js	/^RTCSession.prototype.unmute = function(options) {$/;"	m
+RTCSession_DTMF	RTCSession.js	/^var RTCSession_DTMF = require('.\/RTCSession\/DTMF');$/;"	v
+RTCSession_ReferNotifier	RTCSession.js	/^var RTCSession_ReferNotifier = require('.\/RTCSession\/ReferNotifier');$/;"	v
+RTCSession_ReferSubscriber	RTCSession.js	/^var RTCSession_ReferSubscriber = require('.\/RTCSession\/ReferSubscriber');$/;"	v
+RTCSession_Request	RTCSession.js	/^var RTCSession_Request = require('.\/RTCSession\/Request');$/;"	v
+RTCSession_Request	RTCSession/ReferNotifier.js	/^var RTCSession_Request = require('.\/Request');$/;"	v
+RTCSession_Request	RTCSession/ReferSubscriber.js	/^var RTCSession_Request = require('.\/Request');$/;"	v
+ReferNotifier	RTCSession/ReferNotifier.js	/^function ReferNotifier(session, id, expires) {$/;"	c
+ReferNotifier.notify	RTCSession/ReferNotifier.js	/^ReferNotifier.prototype.notify = function(code, reason) {$/;"	m
+ReferSubscriber	RTCSession/ReferSubscriber.js	/^function ReferSubscriber(session) {$/;"	c
+ReferSubscriber.receiveNotify	RTCSession/ReferSubscriber.js	/^ReferSubscriber.prototype.receiveNotify = function(request) {$/;"	m
+ReferSubscriber.sendRefer	RTCSession/ReferSubscriber.js	/^ReferSubscriber.prototype.sendRefer = function(target, options) {$/;"	m
+Registrator	Registrator.js	/^function Registrator(ua, transport) {$/;"	c
+Registrator	UA.js	/^var Registrator = require('.\/Registrator');$/;"	v
+Registrator.register	Registrator.js	/^  register: function() {$/;"	m
+Registrator.register.receiveResponse	Registrator.js	/^    this.receiveResponse = function(response) {$/;"	m
+Registrator.setExtraContactParams	Registrator.js	/^  setExtraContactParams: function(extraContactParams) {$/;"	m
+Registrator.setExtraHeaders	Registrator.js	/^  setExtraHeaders: function(extraHeaders) {$/;"	m
+Request	RTCSession/Request.js	/^function Request(session, method) {$/;"	c
+Request.onDialogError	RTCSession/Request.js	/^Request.prototype.onDialogError = function() {$/;"	m
+Request.onRequestTimeout	RTCSession/Request.js	/^Request.prototype.onRequestTimeout = function() {$/;"	m
+Request.onTransportError	RTCSession/Request.js	/^Request.prototype.onTransportError = function() {$/;"	m
+Request.receiveResponse	RTCSession/Request.js	/^Request.prototype.receiveResponse = function(response) {$/;"	m
+Request.send	RTCSession/Request.js	/^Request.prototype.send = function(options) {$/;"	m
+RequestSender	Dialog/RequestSender.js	/^var RequestSender = require('..\/RequestSender');$/;"	v
+RequestSender	Message.js	/^var RequestSender = require('.\/RequestSender');$/;"	v
+RequestSender	RTCSession.js	/^var RequestSender = require('.\/RequestSender');$/;"	v
+RequestSender	Registrator.js	/^var RequestSender = require('.\/RequestSender');$/;"	v
+RequestSender	RequestSender.js	/^function RequestSender(applicant, ua) {$/;"	c
+RequestSender.onRequestTimeout	RequestSender.js	/^  onRequestTimeout: function() {$/;"	m
+RequestSender.onTransportError	RequestSender.js	/^  onTransportError: function() {$/;"	m
+RequestSender.receiveResponse	RequestSender.js	/^  receiveResponse: function(response) {$/;"	m
+RequestSender.send	RequestSender.js	/^  send: function() {$/;"	m
+SIPMessage	Dialog.js	/^var SIPMessage = require('.\/SIPMessage');$/;"	v
+SIPMessage	Message.js	/^var SIPMessage = require('.\/SIPMessage');$/;"	v
+SIPMessage	Parser.js	/^var SIPMessage = require('.\/SIPMessage');$/;"	v
+SIPMessage	RTCSession.js	/^var SIPMessage = require('.\/SIPMessage');$/;"	v
+SIPMessage	Registrator.js	/^var SIPMessage = require('.\/SIPMessage');$/;"	v
+SIPMessage	UA.js	/^var SIPMessage = require('.\/SIPMessage');$/;"	v
+SIPMessage	sanityCheck.js	/^var SIPMessage = require('.\/SIPMessage');$/;"	v
+Socket	Socket.js	/^function Socket() {}$/;"	f
+Socket	Transport.js	/^var Socket = require('.\/Socket');$/;"	v
+Socket	UA.js	/^var Socket = require('.\/Socket');$/;"	v
+Socket.isSocket	Socket.js	/^Socket.isSocket = function(socket) {$/;"	f
+T1	Timers.js	/^var T1 = 500,$/;"	v
+Timers	RTCSession.js	/^var Timers = require('.\/Timers');$/;"	v
+Timers	Transactions.js	/^var Timers = require('.\/Timers');$/;"	v
+Timers.T1	Timers.js	/^  T1: T1,$/;"	p
+Timers.T2	Timers.js	/^  T2: T2,$/;"	p
+Timers.T4	Timers.js	/^  T4: T4,$/;"	p
+Timers.TIMER_B	Timers.js	/^  TIMER_B: 64 * T1,$/;"	p
+Transactions	Dialog.js	/^var Transactions = require('.\/Transactions');$/;"	v
+Transactions	Dialog/RequestSender.js	/^var Transactions = require('..\/Transactions');$/;"	v
+Transactions	Message.js	/^var Transactions = require('.\/Transactions');$/;"	v
+Transactions	RTCSession.js	/^var Transactions = require('.\/Transactions');$/;"	v
+Transactions	RequestSender.js	/^var Transactions = require('.\/Transactions');$/;"	v
+Transactions	UA.js	/^var Transactions = require('.\/Transactions');$/;"	v
+Transport	Transport.js	/^function Transport(sockets, recovery_options) {$/;"	c
+Transport	UA.js	/^var Transport = require('.\/Transport');$/;"	v
+Transport.connect	Transport.js	/^Transport.prototype.connect = function() {$/;"	m
+Transport.disconnect	Transport.js	/^Transport.prototype.disconnect = function() {$/;"	m
+Transport.isConnected	Transport.js	/^Transport.prototype.isConnected = function() {$/;"	m
+Transport.isConnecting	Transport.js	/^Transport.prototype.isConnecting = function() {$/;"	m
+Transport.send	Transport.js	/^Transport.prototype.send = function(data) {$/;"	m
+UA	JsSIP.js	/^var UA = require('.\/UA');$/;"	v
+UA	RequestSender.js	/^var UA = require('.\/UA');$/;"	v
+UA	UA.js	/^function UA(configuration) {$/;"	c
+UA.cache.credentials	UA.js	/^    credentials: {}$/;"	p
+UA.call	UA.js	/^UA.prototype.call = function(target, options) {$/;"	m
+UA.configuration_check.mandatory	UA.js	/^  mandatory: {$/;"	p
+UA.destroyTransaction	UA.js	/^UA.prototype.destroyTransaction = function(transaction) {$/;"	m
+UA.findDialog	UA.js	/^UA.prototype.findDialog = function(call_id, from_tag, to_tag) {$/;"	m
+UA.findSession	UA.js	/^UA.prototype.findSession = function(request) {$/;"	m
+UA.get	UA.js	/^UA.prototype.get = function(parameter) {$/;"	m
+UA.isConnected	UA.js	/^UA.prototype.isConnected = function() {$/;"	m
+UA.isRegistered	UA.js	/^UA.prototype.isRegistered = function() {$/;"	m
+UA.loadConfig	UA.js	/^UA.prototype.loadConfig = function(configuration) {$/;"	m
+UA.newMessage	UA.js	/^UA.prototype.newMessage = function(data) {$/;"	m
+UA.newRTCSession	UA.js	/^UA.prototype.newRTCSession = function(data) {$/;"	m
+UA.newTransaction	UA.js	/^UA.prototype.newTransaction = function(transaction) {$/;"	m
+UA.normalizeTarget	UA.js	/^UA.prototype.normalizeTarget = function(target) {$/;"	m
+UA.receiveRequest	UA.js	/^UA.prototype.receiveRequest = function(request) {$/;"	m
+UA.register	UA.js	/^UA.prototype.register = function() {$/;"	m
+UA.registered	UA.js	/^UA.prototype.registered = function(data) {$/;"	m
+UA.registrationFailed	UA.js	/^UA.prototype.registrationFailed = function(data) {$/;"	m
+UA.registrator	UA.js	/^UA.prototype.registrator = function() {$/;"	m
+UA.sendMessage	UA.js	/^UA.prototype.sendMessage = function(target, body, options) {$/;"	m
+UA.set	UA.js	/^UA.prototype.set = function(parameter, value) {$/;"	m
+UA.start	UA.js	/^UA.prototype.start = function() {$/;"	m
+UA.stop	UA.js	/^UA.prototype.stop = function() {$/;"	m
+UA.terminateSessions	UA.js	/^UA.prototype.terminateSessions = function(options) {$/;"	m
+UA.unregister	UA.js	/^UA.prototype.unregister = function(options) {$/;"	m
+UA.unregistered	UA.js	/^UA.prototype.unregistered = function(data) {$/;"	m
+UA.var.parameter.via_host	UA.js	/^    via_host: Utils.createRandomToken(12) + '.invalid',$/;"	p
+URI	JsSIP.js	/^var URI = require('.\/URI');$/;"	v
+URI	NameAddrHeader.js	/^var URI = require('.\/URI');$/;"	v
+URI	UA.js	/^var URI = require('.\/URI');$/;"	v
+URI	URI.js	/^function URI(scheme, user, host, port, parameters, headers) {$/;"	c
+URI	Utils.js	/^var URI = require('.\/URI');$/;"	v
+URI.clearHeaders	URI.js	/^  clearHeaders: function() {$/;"	m
+URI.clearParams	URI.js	/^  clearParams: function() {$/;"	m
+URI.clone	URI.js	/^  clone: function() {$/;"	m
+URI.deleteHeader	URI.js	/^  deleteHeader: function(header) {$/;"	m
+URI.deleteParam	URI.js	/^  deleteParam: function(parameter) {$/;"	m
+URI.getHeader	URI.js	/^  getHeader: function(name) {$/;"	m
+URI.getParam	URI.js	/^  getParam: function(key) {$/;"	m
+URI.hasHeader	URI.js	/^  hasHeader: function(name) {$/;"	m
+URI.hasParam	URI.js	/^  hasParam: function(key) {$/;"	m
+URI.parse	URI.js	/^URI.parse = function(uri) {$/;"	f
+URI.setHeader	URI.js	/^  setHeader: function(name, value) {$/;"	m
+URI.setParam	URI.js	/^  setParam: function(key, value) {$/;"	m
+URI.toAor	URI.js	/^  toAor: function(show_port){$/;"	m
+URI.toString	URI.js	/^  toString: function(){$/;"	m
+Utils	DigestAuthentication.js	/^var Utils = require('.\/Utils');$/;"	v
+Utils	JsSIP.js	/^var Utils = require('.\/Utils');$/;"	v
+Utils	Message.js	/^var Utils = require('.\/Utils');$/;"	v
+Utils	RTCSession.js	/^var Utils = require('.\/Utils');$/;"	v
+Utils	Registrator.js	/^var Utils = require('.\/Utils');$/;"	v
+Utils	SIPMessage.js	/^var Utils = require('.\/Utils');$/;"	v
+Utils	Socket.js	/^var Utils = require('.\/Utils');$/;"	v
+Utils	UA.js	/^var Utils = require('.\/Utils');$/;"	v
+Utils	URI.js	/^var Utils = require('.\/Utils');$/;"	v
+Utils	sanityCheck.js	/^var Utils = require('.\/Utils');$/;"	v
+Utils.calculateMD5	Utils.js	/^Utils.calculateMD5 = function(string) {$/;"	f
+Utils.calculateMD5.addUnsigned	Utils.js	/^  function addUnsigned(lX,lY) {$/;"	f
+Utils.calculateMD5.convertToWordArray	Utils.js	/^  function convertToWordArray(string) {$/;"	f
+Utils.calculateMD5.doF	Utils.js	/^  function doF(x,y,z) {$/;"	f
+Utils.calculateMD5.doFF	Utils.js	/^  function doFF(a,b,c,d,x,s,ac) {$/;"	f
+Utils.calculateMD5.doG	Utils.js	/^  function doG(x,y,z) {$/;"	f
+Utils.calculateMD5.doGG	Utils.js	/^  function doGG(a,b,c,d,x,s,ac) {$/;"	f
+Utils.calculateMD5.doH	Utils.js	/^  function doH(x,y,z) {$/;"	f
+Utils.calculateMD5.doHH	Utils.js	/^  function doHH(a,b,c,d,x,s,ac) {$/;"	f
+Utils.calculateMD5.doI	Utils.js	/^  function doI(x,y,z) {$/;"	f
+Utils.calculateMD5.doII	Utils.js	/^  function doII(a,b,c,d,x,s,ac) {$/;"	f
+Utils.calculateMD5.rotateLeft	Utils.js	/^  function rotateLeft(lValue, iShiftBits) {$/;"	f
+Utils.calculateMD5.utf8Encode	Utils.js	/^  function utf8Encode(string) {$/;"	f
+Utils.calculateMD5.wordToHex	Utils.js	/^  function wordToHex(lValue) {$/;"	f
+Utils.closeMediaStream	Utils.js	/^Utils.closeMediaStream = function(stream) {$/;"	f
+Utils.createRandomToken	Utils.js	/^Utils.createRandomToken = function(size, base) {$/;"	f
+Utils.escapeUser	Utils.js	/^Utils.escapeUser = function(user) {$/;"	f
+Utils.getRandomTestNetIP	Utils.js	/^Utils.getRandomTestNetIP = function() {$/;"	f
+Utils.getRandomTestNetIP.getOctet	Utils.js	/^  function getOctet(from,to) {$/;"	f
+Utils.hasMethods	Utils.js	/^Utils.hasMethods = function(obj \/*, method list as strings *\/){$/;"	f
+Utils.headerize	Utils.js	/^Utils.headerize = function(string) {$/;"	f
+Utils.headerize.exceptions.Call-Id	Utils.js	/^    'Call-Id': 'Call-ID',$/;"	p
+Utils.headerize.exceptions.Cseq	Utils.js	/^    'Cseq': 'CSeq',$/;"	p
+Utils.headerize.exceptions.Www-Authenticate	Utils.js	/^    'Www-Authenticate': 'WWW-Authenticate'$/;"	p
+Utils.hostType	Utils.js	/^Utils.hostType = function(host) {$/;"	f
+Utils.isDecimal	Utils.js	/^Utils.isDecimal = function(num) {$/;"	f
+Utils.isEmpty	Utils.js	/^Utils.isEmpty = function(value) {$/;"	f
+Utils.isFunction	Utils.js	/^Utils.isFunction = function(fn) {$/;"	f
+Utils.isString	Utils.js	/^Utils.isString = function(str) {$/;"	f
+Utils.newTag	Utils.js	/^Utils.newTag = function() {$/;"	f
+Utils.newUUID	Utils.js	/^Utils.newUUID = function() {$/;"	f
+Utils.normalizeTarget	Utils.js	/^Utils.normalizeTarget = function(target, domain) {$/;"	f
+Utils.sipErrorCause	Utils.js	/^Utils.sipErrorCause = function(status_code) {$/;"	f
+Utils.str_utf8_length	Utils.js	/^Utils.str_utf8_length = function(string) {$/;"	f
+WebSocketInterface	JsSIP.js	/^var WebSocketInterface = require('.\/WebSocketInterface');$/;"	v
+WebSocketInterface	WebSocketInterface.js	/^function WebSocketInterface(url) {$/;"	c
+WebSocketInterface.connect	WebSocketInterface.js	/^WebSocketInterface.prototype.connect = function () {$/;"	m
+WebSocketInterface.disconnect	WebSocketInterface.js	/^WebSocketInterface.prototype.disconnect = function() {$/;"	m
+WebSocketInterface.isConnected	WebSocketInterface.js	/^WebSocketInterface.prototype.isConnected = function() {$/;"	m
+WebSocketInterface.isConnecting	WebSocketInterface.js	/^WebSocketInterface.prototype.isConnecting = function() {$/;"	m
+WebSocketInterface.send	WebSocketInterface.js	/^WebSocketInterface.prototype.send = function(message) {$/;"	m
+acceptAndTerminate	RTCSession.js	/^function acceptAndTerminate(response, status_code, reason_phrase) {$/;"	c
+accepted	RTCSession.js	/^function accepted(originator, message) {$/;"	c
+adapter	JsSIP.js	/^var adapter = require('webrtc-adapter');$/;"	v
+checkTransaction	Transactions.js	/^function checkTransaction(ua, request) {$/;"	f
+confirmed	RTCSession.js	/^function confirmed(originator, ack) {$/;"	c
+connecting	RTCSession.js	/^function connecting(request) {$/;"	c
+createDialog	RTCSession.js	/^function createDialog(message, type, early) {$/;"	f
+createLocalDescription	RTCSession.js	/^function createLocalDescription(type, onSuccess, onFailure, constraints) {$/;"	c
+createLocalDescription.createSucceeded	RTCSession.js	/^  function createSucceeded(desc) {$/;"	f
+createRTCConnection	RTCSession.js	/^function createRTCConnection(pcConfig, rtcConstraints) {$/;"	c
+debug	Dialog.js	/^var debug = require('debug')('JsSIP:Dialog');$/;"	v
+debug	DigestAuthentication.js	/^var debug = require('debug')('JsSIP:DigestAuthentication');$/;"	v
+debug	JsSIP.js	/^var debug = require('debug')('JsSIP');$/;"	v
+debug	RTCSession.js	/^var debug = require('debug')('JsSIP:RTCSession');$/;"	v
+debug	RTCSession/DTMF.js	/^var debug = require('debug')('JsSIP:RTCSession:DTMF');$/;"	v
+debug	RTCSession/ReferNotifier.js	/^var debug = require('debug')('JsSIP:RTCSession:ReferNotifier');$/;"	v
+debug	RTCSession/ReferSubscriber.js	/^var debug = require('debug')('JsSIP:RTCSession:ReferSubscriber');$/;"	v
+debug	RTCSession/Request.js	/^var debug = require('debug')('JsSIP:RTCSession:Request');$/;"	v
+debug	Registrator.js	/^var debug = require('debug')('JsSIP:Registrator');$/;"	v
+debug	RequestSender.js	/^var debug = require('debug')('JsSIP:RequestSender');$/;"	v
+debug	SIPMessage.js	/^var debug = require('debug')('JsSIP:SIPMessage');$/;"	v
+debug	Transport.js	/^var debug = require('debug')('JsSIP:Transport');$/;"	v
+debug	UA.js	/^var debug = require('debug')('JsSIP:UA');$/;"	v
+debug	WebSocketInterface.js	/^var debug = require('debug')('JsSIP:WebSocketInterface');$/;"	v
+debug	sanityCheck.js	/^var debug = require('debug')('JsSIP:sanityCheck');$/;"	v
+debugact	Transactions.js	/^var debugact = require('debug')('JsSIP:AckClientTransaction');$/;"	v
+debugerror	DigestAuthentication.js	/^var debugerror = require('debug')('JsSIP:ERROR:DigestAuthentication');$/;"	v
+debugerror	Parser.js	/^var debugerror = require('debug')('JsSIP:ERROR:Parser');$/;"	v
+debugerror	RTCSession.js	/^var debugerror = require('debug')('JsSIP:ERROR:RTCSession');$/;"	v
+debugerror	RTCSession/DTMF.js	/^var debugerror = require('debug')('JsSIP:ERROR:RTCSession:DTMF');$/;"	v
+debugerror	RTCSession/Request.js	/^var debugerror = require('debug')('JsSIP:ERROR:RTCSession:Request');$/;"	v
+debugerror	Socket.js	/^var debugerror = require('debug')('JsSIP:ERROR:Socket');$/;"	v
+debugerror	Transport.js	/^var debugerror = require('debug')('JsSIP:ERROR:Transport');$/;"	v
+debugerror	UA.js	/^var debugerror = require('debug')('JsSIP:ERROR:UA');$/;"	v
+debugerror	WebSocketInterface.js	/^var debugerror = require('debug')('JsSIP:ERROR:WebSocketInterface');$/;"	v
+debugict	Transactions.js	/^var debugict = require('debug')('JsSIP:InviteClientTransaction');$/;"	v
+debugist	Transactions.js	/^var debugist = require('debug')('JsSIP:InviteServerTransaction');$/;"	v
+debugnict	Transactions.js	/^var debugnict = require('debug')('JsSIP:NonInviteClientTransaction');$/;"	v
+debugnist	Transactions.js	/^var debugnist = require('debug')('JsSIP:NonInviteServerTransaction');$/;"	v
+e.originator	RTCSession.js	/^      e = {originator:'remote', type:'answer', sdp:response.body};$/;"	p
+e.sdp	RTCSession.js	/^      e = {originator:'remote', type:'answer', sdp:response.body};$/;"	p
+e.type	RTCSession.js	/^      e = {originator:'remote', type:'answer', sdp:response.body};$/;"	p
+ended	RTCSession.js	/^function ended(originator, message, cause) {$/;"	c
+eventHandlers.failed	RTCSession.js	/^    failed: function() {$/;"	m
+eventHandlers.succeeded	RTCSession.js	/^    succeeded: function() {$/;"	m
+events	Message.js	/^var events = require('events');$/;"	v
+events	RTCSession.js	/^var events = require('events');$/;"	v
+events	RTCSession/DTMF.js	/^var events = require('events');$/;"	v
+events	RTCSession/ReferSubscriber.js	/^var events = require('events');$/;"	v
+events	Transactions.js	/^var events = require('events');$/;"	v
+events	UA.js	/^var events = require('events');$/;"	v
+exception	Exceptions.js	/^    exception.prototype = new Error();$/;"	c
+failed	RTCSession.js	/^function failed(originator, message, cause) {$/;"	c
+function._sendDTMF	RTCSession.js	/^  function _sendDTMF() {$/;"	f
+function.remoteDescriptionSucceededOrNotNeeded	RTCSession.js	/^  function remoteDescriptionSucceededOrNotNeeded() {$/;"	f
+function.rtcFailed	RTCSession.js	/^  function rtcFailed() {$/;"	f
+function.rtcSucceeded	RTCSession.js	/^  function rtcSucceeded(desc) {$/;"	f
+function.userMediaFailed	RTCSession.js	/^  function userMediaFailed() {$/;"	f
+function.userMediaSucceeded	RTCSession.js	/^  function userMediaSucceeded(stream) {$/;"	f
+getHeader	Parser.js	/^function getHeader(data, headerStart) {$/;"	f
+getSocket	Transport.js	/^function getSocket() {$/;"	c
+handleSessionTimersInIncomingRequest	RTCSession.js	/^function handleSessionTimersInIncomingRequest(request, responseExtraHeaders) {$/;"	c
+handleSessionTimersInIncomingResponse	RTCSession.js	/^function handleSessionTimersInIncomingResponse(response) {$/;"	c
+holdMediaTypes	RTCSession.js	/^var holdMediaTypes = ['audio', 'video'];$/;"	v
+mangleOffer	RTCSession.js	/^function mangleOffer(sdp) {$/;"	f
+message	sanityCheck.js	/^var message, ua, transport,$/;"	v
+minimumHeaders	sanityCheck.js	/^function minimumHeaders() {$/;"	f
+module.exports.AckClientTransaction	Transactions.js	/^  AckClientTransaction: AckClientTransaction,$/;"	p
+module.exports.C	Transactions.js	/^  C: null,$/;"	p
+module.exports.IncomingRequest	SIPMessage.js	/^  IncomingRequest: IncomingRequest,$/;"	p
+module.exports.IncomingResponse	SIPMessage.js	/^  IncomingResponse: IncomingResponse$/;"	p
+module.exports.InviteClientTransaction	Transactions.js	/^  InviteClientTransaction: InviteClientTransaction,$/;"	p
+module.exports.InviteServerTransaction	Transactions.js	/^  InviteServerTransaction: InviteServerTransaction,$/;"	p
+module.exports.NonInviteClientTransaction	Transactions.js	/^  NonInviteClientTransaction: NonInviteClientTransaction,$/;"	p
+module.exports.NonInviteServerTransaction	Transactions.js	/^  NonInviteServerTransaction: NonInviteServerTransaction,$/;"	p
+module.exports.OutgoingRequest	SIPMessage.js	/^  OutgoingRequest: OutgoingRequest,$/;"	p
+module.exports.checkTransaction	Transactions.js	/^  checkTransaction: checkTransaction$/;"	p
+newRTCSession	RTCSession.js	/^function newRTCSession(originator, request) {$/;"	c
+onClose	WebSocketInterface.js	/^function onClose(e) {$/;"	c
+onClose.data.error	WebSocketInterface.js	/^    error: !e.wasClean,$/;"	p
+onClose.data.socket	WebSocketInterface.js	/^    socket: this,$/;"	p
+onConnect	Transport.js	/^function onConnect() {$/;"	c
+onData	Transport.js	/^function onData(data) {$/;"	c
+onDisconnect	Transport.js	/^function onDisconnect(error, code, reason) {$/;"	c
+onError	WebSocketInterface.js	/^function onError(e) {$/;"	f
+onMessage	WebSocketInterface.js	/^function onMessage(e) {$/;"	c
+onOpen	WebSocketInterface.js	/^function onOpen() {$/;"	c
+onRequestTimeout	Registrator.js	/^    this.onRequestTimeout = function() {$/;"	c
+onSucceeded.e.originator	RTCSession.js	/^    var e = {originator:'remote', type:'answer', sdp:response.body};$/;"	p
+onSucceeded.e.sdp	RTCSession.js	/^    var e = {originator:'remote', type:'answer', sdp:response.body};$/;"	p
+onSucceeded.e.type	RTCSession.js	/^    var e = {originator:'remote', type:'answer', sdp:response.body};$/;"	p
+onTransportConnect	UA.js	/^function onTransportConnect(data) {$/;"	c
+onTransportConnecting	UA.js	/^function onTransportConnecting(data) {$/;"	c
+onTransportData	UA.js	/^function onTransportData(data) {$/;"	f
+onTransportDisconnect	UA.js	/^function onTransportDisconnect(data) {$/;"	c
+onTransportError	Registrator.js	/^    this.onTransportError = function() {$/;"	c
+onhold	RTCSession.js	/^function onhold(originator) {$/;"	c
+onmute	RTCSession.js	/^function onmute(options) {$/;"	c
+onunhold	RTCSession.js	/^function onunhold(originator) {$/;"	c
+onunmute	RTCSession.js	/^function onunmute(options) {$/;"	c
+options.eventHandlers.onFailed	RTCSession.js	/^        onFailed: function() { self.tones = null; }$/;"	m
+parseHeader	Parser.js	/^function parseHeader(message, data, headerStart, headerEnd) {$/;"	f
+pkg	Constants.js	/^var pkg = require('..\/package.json');$/;"	v
+pkg	JsSIP.js	/^var pkg = require('..\/package.json');$/;"	v
+progress	RTCSession.js	/^function progress(originator, response) {$/;"	c
+receiveInviteResponse	RTCSession.js	/^function receiveInviteResponse(response) {$/;"	f
+receiveNotify	RTCSession.js	/^function receiveNotify(request) {$/;"	f
+receiveRefer	RTCSession.js	/^function receiveRefer(request) {$/;"	c
+receiveRefer.accept	RTCSession.js	/^  function accept(initCallback, options) {$/;"	f
+receiveRefer.reject	RTCSession.js	/^  function reject() {$/;"	f
+receiveReinvite	RTCSession.js	/^function receiveReinvite(request) {$/;"	c
+receiveReinvite.createSdp	RTCSession.js	/^  function createSdp(onSuccess, onFailure) {$/;"	f
+receiveReinvite.doAnswer	RTCSession.js	/^  function doAnswer() {$/;"	f
+receiveReinvite.reject	RTCSession.js	/^  function reject(options) {$/;"	f
+receiveReplaces	RTCSession.js	/^function receiveReplaces(request) {$/;"	c
+receiveReplaces.accept	RTCSession.js	/^  function accept(initCallback) {$/;"	f
+receiveReplaces.reject	RTCSession.js	/^  function reject() {$/;"	f
+receiveResponse	Registrator.js	/^    this.receiveResponse = function(response) {$/;"	f
+receiveUpdate	RTCSession.js	/^function receiveUpdate(request) {$/;"	c
+receiveUpdate.e.originator	RTCSession.js	/^  var e = {originator:'remote', type:'offer', sdp:request.body};$/;"	p
+receiveUpdate.e.sdp	RTCSession.js	/^  var e = {originator:'remote', type:'offer', sdp:request.body};$/;"	p
+receiveUpdate.e.type	RTCSession.js	/^  var e = {originator:'remote', type:'offer', sdp:request.body};$/;"	p
+receiveUpdate.reject	RTCSession.js	/^  function reject(options) {$/;"	f
+reconnect	Transport.js	/^function reconnect() {$/;"	c
+removeSubscriber	RTCSession/ReferSubscriber.js	/^function removeSubscriber() {$/;"	c
+reply	sanityCheck.js	/^function reply(status_code) {$/;"	f
+requestParams.from_tag	RTCSession.js	/^  requestParams = {from_tag: this.from_tag};$/;"	p
+request_sender.DialogRequestSender.onRequestTimeout	Dialog/RequestSender.js	/^  onRequestTimeout: function() {$/;"	m
+request_sender.DialogRequestSender.onTransportError	Dialog/RequestSender.js	/^  onTransportError: function() {$/;"	m
+request_sender.DialogRequestSender.receiveResponse	Dialog/RequestSender.js	/^  receiveResponse: function(response) {$/;"	m
+rfc3261_16_3_4	sanityCheck.js	/^function rfc3261_16_3_4() {$/;"	f
+rfc3261_18_3_request	sanityCheck.js	/^function rfc3261_18_3_request() {$/;"	f
+rfc3261_18_3_response	sanityCheck.js	/^function rfc3261_18_3_response() {$/;"	f
+rfc3261_8_1_3_3	sanityCheck.js	/^function rfc3261_8_1_3_3() {$/;"	f
+rfc3261_8_2_2_1	sanityCheck.js	/^function rfc3261_8_2_2_1() {$/;"	f
+rfc3261_8_2_2_2	sanityCheck.js	/^function rfc3261_8_2_2_2() {$/;"	f
+rtcSucceeded.replyFailed	RTCSession.js	/^    function replyFailed() {$/;"	f
+rtcSucceeded.replySucceeded	RTCSession.js	/^    function replySucceeded() {$/;"	f
+runSessionTimer	RTCSession.js	/^function runSessionTimer() {$/;"	c
+sanityCheck	UA.js	/^var sanityCheck = require('.\/sanityCheck');$/;"	v
+sanityCheck	sanityCheck.js	/^function sanityCheck(m, u, t) {$/;"	f
+sdp_transform	RTCSession.js	/^var sdp_transform = require('sdp-transform');$/;"	v
+sdp_transform	SIPMessage.js	/^var sdp_transform = require('sdp-transform');$/;"	v
+sendInitialRequest	RTCSession.js	/^function sendInitialRequest(mediaConstraints, rtcOfferConstraints, mediaStream) {$/;"	c
+sendInitialRequest.receiveResponse	RTCSession.js	/^  this.receiveResponse = function(response) {$/;"	m
+sendInitialRequest.rtcFailed	RTCSession.js	/^  function rtcFailed() {$/;"	f
+sendInitialRequest.rtcSucceeded	RTCSession.js	/^  function rtcSucceeded(desc) {$/;"	f
+sendInitialRequest.userMediaFailed	RTCSession.js	/^  function userMediaFailed() {$/;"	f
+sendInitialRequest.userMediaSucceeded	RTCSession.js	/^  function userMediaSucceeded(stream) {$/;"	f
+sendReinvite	RTCSession.js	/^function sendReinvite(options) {$/;"	f
+sendReinvite.onFailed	RTCSession.js	/^  function onFailed(response) {$/;"	f
+sendReinvite.onSucceeded	RTCSession.js	/^  function onSucceeded(response) {$/;"	f
+sendRequest	RTCSession.js	/^function sendRequest(method, options) {$/;"	f
+sendUpdate	RTCSession.js	/^function sendUpdate(options) {$/;"	f
+sendUpdate.onFailed	RTCSession.js	/^  function onFailed(response) {$/;"	f
+sendUpdate.onSucceeded	RTCSession.js	/^  function onSucceeded(response) {$/;"	f
+setACKTimer	RTCSession.js	/^function setACKTimer() {$/;"	c
+setInvite2xxTimer	RTCSession.js	/^function setInvite2xxTimer(request, body) {$/;"	c
+setLocalMediaStatus	RTCSession.js	/^function setLocalMediaStatus() {$/;"	f
+sockets.socket	UA.js	/^            sockets[idx] = {socket: sockets[idx]};$/;"	p
+this.contact.pub_gruu	UA.js	/^    pub_gruu: null,$/;"	p
+this.contact.temp_gruu	UA.js	/^    temp_gruu: null,$/;"	p
+this.contact.uri	UA.js	/^    uri: settings.contact_uri,$/;"	p
+this.id.call_id	Dialog.js	/^      call_id: message.call_id,$/;"	p
+this.receiveRequest	RTCSession.js	/^        this.receiveRequest = function(request) {$/;"	m
+this.socket	Transport.js	/^  this.socket.onconnect     = function() {};$/;"	m
+this.socket	Transport.js	/^  this.socket.ondata        = function() {};$/;"	m
+this.socket	Transport.js	/^  this.socket.ondisconnect  = function() {};$/;"	m
+this.ws	WebSocketInterface.js	/^    this.ws.onclose   = function() {};$/;"	m
+this.ws	WebSocketInterface.js	/^    this.ws.onerror   = function() {};$/;"	m
+this.ws	WebSocketInterface.js	/^    this.ws.onmessage = function() {};$/;"	m
+this.ws	WebSocketInterface.js	/^    this.ws.onopen    = function() {};$/;"	m
+toogleMuteAudio	RTCSession.js	/^function toogleMuteAudio(mute) {$/;"	f
+toogleMuteVideo	RTCSession.js	/^function toogleMuteVideo(mute) {$/;"	f
+transactions.nist	UA.js	/^    nist: {},$/;"	p
+util	Message.js	/^var util = require('util');$/;"	v
+util	RTCSession.js	/^var util = require('util');$/;"	v
+util	RTCSession/DTMF.js	/^var util = require('util');$/;"	v
+util	RTCSession/ReferSubscriber.js	/^var util = require('util');$/;"	v
+util	Transactions.js	/^var util = require('util');$/;"	v
+util	UA.js	/^var util = require('util');$/;"	v
+var.e.originator	RTCSession.js	/^          var e = {originator:'remote', type:'answer', sdp:request.body};$/;"	p
+var.e.originator	RTCSession.js	/^      var e = {originator:'remote', type:'answer', sdp:response.body};$/;"	p
+var.e.originator	RTCSession.js	/^      var e = {originator:'remote', type:'offer', sdp:request.body};$/;"	p
+var.e.originator	RTCSession.js	/^    var e = {originator:'remote', type:'offer', sdp:request.body};$/;"	p
+var.e.sdp	RTCSession.js	/^          var e = {originator:'remote', type:'answer', sdp:request.body};$/;"	p
+var.e.sdp	RTCSession.js	/^      var e = {originator:'remote', type:'answer', sdp:response.body};$/;"	p
+var.e.sdp	RTCSession.js	/^      var e = {originator:'remote', type:'offer', sdp:request.body};$/;"	p
+var.e.sdp	RTCSession.js	/^    var e = {originator:'remote', type:'offer', sdp:request.body};$/;"	p
+var.e.type	RTCSession.js	/^          var e = {originator:'remote', type:'answer', sdp:request.body};$/;"	p
+var.e.type	RTCSession.js	/^      var e = {originator:'remote', type:'answer', sdp:response.body};$/;"	p
+var.e.type	RTCSession.js	/^      var e = {originator:'remote', type:'offer', sdp:request.body};$/;"	p
+var.e.type	RTCSession.js	/^    var e = {originator:'remote', type:'offer', sdp:request.body};$/;"	p
+var.exception	Exceptions.js	/^    var exception = function(parameter, value) {$/;"	c

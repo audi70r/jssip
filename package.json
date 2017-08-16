@@ -1,0 +1,130 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "jssip",
+        "scope": null,
+        "escapedName": "jssip",
+        "name": "jssip",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "/home/user/Documents/onoff_b2c"
+    ]
+  ],
+  "_from": "jssip@latest",
+  "_id": "jssip@3.0.13",
+  "_inCache": true,
+  "_location": "/jssip",
+  "_nodeVersion": "7.6.0",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/jssip-3.0.13.tgz_1497080421833_0.9714194699190557"
+  },
+  "_npmUser": {
+    "name": "jmillan",
+    "email": "jmillan@aliax.net"
+  },
+  "_npmVersion": "4.1.2",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "jssip",
+    "scope": null,
+    "escapedName": "jssip",
+    "name": "jssip",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/jssip/-/jssip-3.0.13.tgz",
+  "_shasum": "4f4f256b2560b6848fa1072a8310e55844cbd6d5",
+  "_shrinkwrap": null,
+  "_spec": "jssip",
+  "_where": "/home/user/Documents/onoff_b2c",
+  "author": {
+    "name": "José Luis Millán",
+    "email": "jmillan@aliax.net",
+    "url": "https://github.com/jmillan"
+  },
+  "bugs": {
+    "url": "https://github.com/versatica/JsSIP/issues"
+  },
+  "contributors": [
+    {
+      "name": "Iñaki Baz Castillo",
+      "email": "ibc@aliax.net",
+      "url": "https://github.com/ibc"
+    },
+    {
+      "name": "Saúl Ibarra Corretgé",
+      "email": "saghul@gmail.com",
+      "url": "https://github.com/saghul"
+    }
+  ],
+  "dependencies": {
+    "debug": "^2.6.8",
+    "sdp-transform": "^2.3.0",
+    "webrtc-adapter": "^3.4.3"
+  },
+  "description": "the Javascript SIP library",
+  "devDependencies": {
+    "browserify": "^14.3.0",
+    "gulp": "git+https://github.com/gulpjs/gulp.git#4.0",
+    "gulp-expect-file": "0.0.7",
+    "gulp-header": "1.8.8",
+    "gulp-jshint": "^2.0.4",
+    "gulp-nodeunit-runner": "^0.2.2",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^3.0.0",
+    "gulp-util": "^3.0.8",
+    "jshint": "^2.9.4",
+    "jshint-stylish": "^2.2.1",
+    "pegjs": "0.7.0",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0"
+  },
+  "directories": {},
+  "dist": {
+    "shasum": "4f4f256b2560b6848fa1072a8310e55844cbd6d5",
+    "tarball": "https://registry.npmjs.org/jssip/-/jssip-3.0.13.tgz"
+  },
+  "gitHead": "3ccaf3fb1fcfb6bec449700ff08109972a46ee7a",
+  "homepage": "http://jssip.net",
+  "keywords": [
+    "sip",
+    "websocket",
+    "webrtc",
+    "node",
+    "browser",
+    "library"
+  ],
+  "license": "MIT",
+  "main": "lib/JsSIP.js",
+  "maintainers": [
+    {
+      "name": "ibc",
+      "email": "ibc@aliax.net"
+    },
+    {
+      "name": "jmillan",
+      "email": "jmillan@aliax.net"
+    }
+  ],
+  "name": "jssip",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/versatica/JsSIP.git"
+  },
+  "scripts": {
+    "test": "gulp test"
+  },
+  "title": "JsSIP",
+  "version": "3.0.13"
+}
