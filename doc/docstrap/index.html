@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>JsSIP Index</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
+
+</head>
+
+<body>
+<div class="container-fluid">
+	<div class="navbar navbar-fixed-top navbar-inverse">
+		<div class="navbar-inner">
+			<a class="brand" href="index.html">JsSIP</a>
+			<ul class="nav">
+				
+				<li class="dropdown">
+					<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="JsSIP.html">JsSIP</a>
+						</li>
+						
+						<li>
+							<a href="JsSIP.Exceptions.html">JsSIP.Exceptions</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="JsSIP.Exceptions.ConfigurationError.html">JsSIP.Exceptions.ConfigurationError</a>
+						</li>
+						
+						<li>
+							<a href="JsSIP.UA.html">JsSIP.UA</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="global.html#checkTransaction">checkTransaction</a>
+						</li>
+						
+						<li>
+							<a href="global.html#debug">debug</a>
+						</li>
+						
+						<li>
+							<a href="global.html#debugnict">debugnict</a>
+						</li>
+						
+						<li>
+							<a href="global.html#getHeader">getHeader</a>
+						</li>
+						
+						<li>
+							<a href="global.html#JsSIP_C">JsSIP_C</a>
+						</li>
+						
+						<li>
+							<a href="global.html#OutgoingRequest">OutgoingRequest</a>
+						</li>
+						
+						<li>
+							<a href="global.html#URI">URI</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+			</ul>
+		</div>
+	</div>
+
+	<div class="row-fluid">
+
+		
+		<div class="span8">
+			
+				<div id="main">
+					
+
+
+	
+	<span class="page-title">Index</span>
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+    <section class="readme-section">
+        <article><p align="center"><a href="http://jssip.net"><img src="http://jssip.net/images/jssip-banner-new.png"/></a></p>
+
+<p><a href="https://travis-ci.org/versatica/JsSIP"><img src="https://travis-ci.org/versatica/JsSIP.png?branch=new-design" alt="Build Status"></a></p>
+<h2>Overview</h2>
+<ul>
+<li>Runs in the browser and Node.js.</li>
+<li>SIP over <a href="http://jssip.net/documentation/misc/sip_websocket/">WebSocket</a> (use real SIP in your web apps)</li>
+<li>Audio/video calls (<a href="http://jssip.net/documentation/misc/webrtc">WebRTC</a>), instant messaging and presence</li>
+<li>Lightweight! (~140KB)</li>
+<li>Easy to use and powerful user API</li>
+<li>Works with OverSIP, Kamailio, Asterisk. Mobicents and repro (reSIProcate) servers (<a href="http://jssip.net/documentation/misc/interoperability">more info</a>)</li>
+<li>Written by the authors of <a href="http://tools.ietf.org/html/rfc7118">RFC 7118 &quot;The WebSocket Protocol as a Transport for SIP&quot;</a> and <a href="http://oversip.net">OverSIP</a></li>
+</ul>
+<h2>Getting Started</h2>
+<p>The following simple JavaScript code creates a JsSIP User Agent instance and makes a SIP call:</p>
+<pre><code class="lang-javascript">// Create our JsSIP instance and run it:
+
+var configuration = {
+  'ws_servers': 'ws://sip-ws.example.com',
+  'uri': 'sip:alice@example.com',
+  'password': 'superpassword'
+};
+
+var ua = new JsSIP.UA(configuration);
+
+ua.start();
+
+
+// Make an audio/video call:
+
+// HTML5 &lt;video&gt; elements in which local and remote video will be shown
+var selfView =   document.getElementById('my-video');
+var remoteView =  document.getElementById('peer-video');
+
+// Register callbacks to desired call events
+var eventHandlers = {
+  'progress': function(e){
+    console.log('call is in progress');
+  },
+  'failed': function(e){
+    console.log('call failed with cause: '+ e.data.cause);
+  },
+  'ended': function(e){
+    console.log('call ended with cause: '+ e.data.cause);
+  },
+  'confirmed': function(e){
+    var rtcSession = e.sender;
+
+    console.log('call confirmed');
+
+    // Attach local stream to selfView
+    if (rtcSession.getLocalStreams().length &gt; 0) {
+      selfView.src = window.URL.createObjectURL(rtcSession.getLocalStreams()[0]);
+    }
+
+    // Attach remote stream to remoteView
+    if (rtcSession.getRemoteStreams().length &gt; 0) {
+      remoteView.src = window.URL.createObjectURL(rtcSession.getRemoteStreams()[0]);
+    }
+  }
+};
+
+var options = {
+  'eventHandlers': eventHandlers,
+  'mediaConstraints': {'audio': true, 'video': true}
+};
+
+
+ua.call('sip:bob@example.com', options);</code></pre>
+<p>Want to see more? Check the full documentation at <a href="http://jssip.net/documentation/">http://jssip.net/documentation/</a>.</p>
+<h2>Online Demo</h2>
+<p>Check our <strong>Tryit JsSIP</strong> online demo:</p>
+<ul>
+<li><a href="http://tryit.jssip.net">tryit.jssip.net</a></li>
+</ul>
+<h2>Website and Documentation</h2>
+<ul>
+<li><a href="http://jssip.net/">jssip.net</a></li>
+</ul>
+<h2>Download</h2>
+<ul>
+<li>As Node module: <code>$ npm install jssip</code></li>
+<li>As Bower module: <code>$ bower install jssip</code></li>
+<li>Manually: <a href="http://jssip.net/download/">jssip.net/download</a></li>
+</ul>
+<h2>Authors</h2>
+<h4>José Luis Millán</h4>
+<ul>
+<li>Main author. Core Designer and Developer.</li>
+<li><a href="&#109;&#x61;&#x69;&#108;&#116;&#111;&#58;&#x6a;&#109;&#x69;&#x6c;&#108;&#97;&#x6e;&#x40;&#97;&#108;&#105;&#97;&#120;&#x2e;&#x6e;&#x65;&#116;">&#x6a;&#109;&#x69;&#x6c;&#108;&#97;&#x6e;&#x40;&#97;&#108;&#105;&#97;&#120;&#x2e;&#x6e;&#x65;&#116;</a> (Github <a href="https://github.com/jmillan">@jmillan</a>)</li>
+</ul>
+<h4>Iñaki Baz Castillo</h4>
+<ul>
+<li>Core Designer and Developer.</li>
+<li><a href="&#109;&#97;&#105;&#x6c;&#116;&#x6f;&#x3a;&#x69;&#98;&#99;&#64;&#97;&#108;&#x69;&#x61;&#120;&#46;&#110;&#x65;&#x74;">&#x69;&#98;&#99;&#64;&#97;&#108;&#x69;&#x61;&#120;&#46;&#110;&#x65;&#x74;</a> (Github <a href="https://github.com/ibc">@ibc</a>)</li>
+</ul>
+<h4>Saúl Ibarra Corretgé</h4>
+<ul>
+<li>Core Designer.</li>
+<li><a href="&#x6d;&#97;&#x69;&#108;&#116;&#111;&#x3a;&#x73;&#x61;&#103;&#104;&#x75;&#108;&#64;&#103;&#109;&#97;&#x69;&#x6c;&#x2e;&#99;&#111;&#x6d;">&#x73;&#x61;&#103;&#104;&#x75;&#108;&#64;&#103;&#109;&#97;&#x69;&#x6c;&#x2e;&#99;&#111;&#x6d;</a> (Github <a href="https://github.com/saghul">@saghul</a>)</li>
+</ul>
+<h2>License</h2>
+<p>JsSIP is released under the <a href="http://jssip.net/license">MIT license</a>.</p></article>
+    </section>
+
+
+
+
+
+
+
+				</div>
+
+				<div class="clearfix"></div>
+				<footer>
+					
+					
+		<span class="copyright">
+		Copyright (c) 2012-2014 Versatica
+		</span>
+					<br />
+					
+		<span class="jsdoc-message">
+		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a>
+		on Sun Nov 9th 2014 using the <a
+			href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		</span>
+				</footer>
+			</div>
+
+			
+			<div class="span3">
+				<div id="toc"></div>
+			</div>
+			
+			<br clear="both">
+		</div>
+
+	</div>
+	<!--<script src="scripts/sunlight.js"></script>-->
+	<script src="scripts/docstrap.lib.js"></script>
+	<script src="scripts/bootstrap-dropdown.js"></script>
+	<script src="scripts/toc.js"></script>
+
+	<script>
+		$( function () {
+			$( "[id*='$']" ).each( function () {
+				var $this = $( this );
+
+				$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+			} );
+
+			$( "#toc" ).toc( {
+				anchorName  : function ( i, heading, prefix ) {
+					return $( heading ).attr( "id" ) || ( prefix + i );
+				},
+				selectors   : "h1,h2,h3,h4",
+				showAndHide : false,
+				scrollTo    : "100px"
+			} );
+
+			$( "#toc>ul" ).addClass( "nav nav-pills nav-stacked" );
+			$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+			$( '.dropdown-toggle' ).dropdown();
+//			$( ".tutorial-section pre, .readme-section pre" ).addClass( "sunlight-highlight-javascript" ).addClass( "linenums" );
+
+			$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+				var $this = $( this );
+
+				var example = $this.find( "code" );
+				exampleText = example.html();
+				var lang = /{@lang (.*?)}/.exec( exampleText );
+				if ( lang && lang[1] ) {
+					exampleText = exampleText.replace( lang[0], "" );
+					example.html( exampleText );
+					lang = lang[1];
+				} else {
+					lang = "javascript";
+				}
+
+				if ( lang ) {
+
+					$this
+						.addClass( "sunlight-highlight-" + lang )
+						.addClass( "linenums" )
+						.html( example.html() );
+
+				}
+			} );
+
+			Sunlight.highlightAll( {
+				lineNumbers : true,
+				showMenu : true,
+				enableDoclinks : true
+			} );
+		} );
+	 </script>
+
+
+
+	<!--Navigation and Symbol Display-->
+	
+
+
+	<!--Google Analytics-->
+	
+
+</body>
+</html>

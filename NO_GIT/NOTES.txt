@@ -1,0 +1,25 @@
+Antes de ejecutarlo entra en el proyecto de JsSIP_web y haz git pull.
+Y asegúrate de que puedes ejecutar "nanoc co" y te re-genera el HTML y
+tal.
+
+Verifica que no hay cambios local es en Tryit-JsSIP, haz svn update.
+
+Luego, en JsSIP, asegúrate de commitear localmente todos los cambios.
+
+Nueva version:
+
+cambia CHANGELOG, package.json, bower.json.
+
+ejecuta 'gulp' para que se genere dist/ con los nuevos bundles y commitea la nueva version. No hagas
+push.
+
+git status  debe decir que todo limpio.
+
+Copia el publish.js adjunto en JSSIP/NO_GIT/publish.js.
+
+Cambia en el publish.js al gusto:
+
+var PATH_TRYIT_TRUNK = '/Users/ibc/src/Tryit-JsSIP/trunk';
+var PATH_JSSIP_WEB = '/Users/ibc/src/JsSIP_web';
+
+Entonces ejecutas NO_GIT/publish.js y ya está.

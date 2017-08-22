@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>JsSIP Source: RequestSender.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
+
+</head>
+
+<body>
+<div class="container-fluid">
+	<div class="navbar navbar-fixed-top navbar-inverse">
+		<div class="navbar-inner">
+			<a class="brand" href="index.html">JsSIP</a>
+			<ul class="nav">
+				
+				<li class="dropdown">
+					<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="JsSIP.html">JsSIP</a>
+						</li>
+						
+						<li>
+							<a href="JsSIP.Exceptions.html">JsSIP.Exceptions</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="JsSIP.Exceptions.ConfigurationError.html">JsSIP.Exceptions.ConfigurationError</a>
+						</li>
+						
+						<li>
+							<a href="JsSIP.UA.html">JsSIP.UA</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="global.html#checkTransaction">checkTransaction</a>
+						</li>
+						
+						<li>
+							<a href="global.html#debug">debug</a>
+						</li>
+						
+						<li>
+							<a href="global.html#debugnict">debugnict</a>
+						</li>
+						
+						<li>
+							<a href="global.html#getHeader">getHeader</a>
+						</li>
+						
+						<li>
+							<a href="global.html#JsSIP_C">JsSIP_C</a>
+						</li>
+						
+						<li>
+							<a href="global.html#OutgoingRequest">OutgoingRequest</a>
+						</li>
+						
+						<li>
+							<a href="global.html#URI">URI</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+			</ul>
+		</div>
+	</div>
+
+	<div class="row-fluid">
+
+		
+			<div class="span12">
+				
+				<div id="main">
+					
+
+
+		<h1 class="page-title">Source: RequestSender.js</h1>
+    
+<section>
+	<article>
+		<pre
+			class="sunlight-highlight-javascript linenums">module.exports = RequestSender;
+
+
+/**
+ * Dependencies.
+ */
+var debug = require('debug')('JsSIP:RequestSender');
+var JsSIP_C = require('./Constants');
+var UA = require('./UA');
+var DigestAuthentication = require('./DigestAuthentication');
+var Transactions = require('./Transactions');
+
+
+function RequestSender(applicant, ua) {
+  this.ua = ua;
+  this.applicant = applicant;
+  this.method = applicant.request.method;
+  this.request = applicant.request;
+  this.credentials = null;
+  this.challenged = false;
+  this.staled = false;
+
+  // If ua is in closing process or even closed just allow sending Bye and ACK
+  if (ua.status === UA.C.STATUS_USER_CLOSED && (this.method !== JsSIP_C.BYE || this.method !== JsSIP_C.ACK)) {
+    this.onTransportError();
+  }
+}
+
+
+/**
+* Create the client transaction and send the message.
+*/
+RequestSender.prototype = {
+  send: function() {
+    switch(this.method) {
+      case "INVITE":
+        this.clientTransaction = new Transactions.InviteClientTransaction(this, this.request, this.ua.transport);
+        break;
+      case "ACK":
+        this.clientTransaction = new Transactions.AckClientTransaction(this, this.request, this.ua.transport);
+        break;
+      default:
+        this.clientTransaction = new Transactions.NonInviteClientTransaction(this, this.request, this.ua.transport);
+    }
+    this.clientTransaction.send();
+  },
+
+  /**
+  * Callback fired when receiving a request timeout error from the client transaction.
+  * To be re-defined by the applicant.
+  */
+  onRequestTimeout: function() {
+    this.applicant.onRequestTimeout();
+  },
+
+  /**
+  * Callback fired when receiving a transport error from the client transaction.
+  * To be re-defined by the applicant.
+  */
+  onTransportError: function() {
+    this.applicant.onTransportError();
+  },
+
+  /**
+  * Called from client transaction when receiving a correct response to the request.
+  * Authenticate request if needed or pass the response back to the applicant.
+  */
+  receiveResponse: function(response) {
+    var cseq, challenge, authorization_header_name,
+      status_code = response.status_code;
+
+    /*
+    * Authentication
+    * Authenticate once. _challenged_ flag used to avoid infinite authentications.
+    */
+    if ((status_code === 401 || status_code === 407) && this.ua.configuration.password !== null) {
+
+      // Get and parse the appropriate WWW-Authenticate or Proxy-Authenticate header.
+      if (response.status_code === 401) {
+        challenge = response.parseHeader('www-authenticate');
+        authorization_header_name = 'authorization';
+      } else {
+        challenge = response.parseHeader('proxy-authenticate');
+        authorization_header_name = 'proxy-authorization';
+      }
+
+      // Verify it seems a valid challenge.
+      if (! challenge) {
+        debug(response.status_code + ' with wrong or missing challenge, cannot authenticate');
+        this.applicant.receiveResponse(response);
+        return;
+      }
+
+      if (!this.challenged || (!this.staled && challenge.stale === true)) {
+        if (!this.credentials) {
+          this.credentials = new DigestAuthentication(this.ua);
+        }
+
+        // Verify that the challenge is really valid.
+        if (!this.credentials.authenticate(this.request, challenge)) {
+          this.applicant.receiveResponse(response);
+          return;
+        }
+        this.challenged = true;
+
+        if (challenge.stale) {
+          this.staled = true;
+        }
+
+        if (response.method === JsSIP_C.REGISTER) {
+          cseq = this.applicant.cseq += 1;
+        } else if (this.request.dialog){
+          cseq = this.request.dialog.local_seqnum += 1;
+        } else {
+          cseq = this.request.cseq + 1;
+          this.request.cseq = cseq;
+        }
+        this.request.setHeader('cseq', cseq +' '+ this.method);
+
+        this.request.setHeader(authorization_header_name, this.credentials.toString());
+        this.send();
+      } else {
+        this.applicant.receiveResponse(response);
+      }
+    } else {
+      this.applicant.receiveResponse(response);
+    }
+  }
+};
+</pre>
+	</article>
+</section>
+
+
+
+
+
+				</div>
+
+				<div class="clearfix"></div>
+				<footer>
+					
+					
+		<span class="copyright">
+		Copyright (c) 2012-2014 Versatica
+		</span>
+					<br />
+					
+		<span class="jsdoc-message">
+		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a>
+		on Sun Nov 9th 2014 using the <a
+			href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		</span>
+				</footer>
+			</div>
+
+			
+			<br clear="both">
+		</div>
+
+	</div>
+	<!--<script src="scripts/sunlight.js"></script>-->
+	<script src="scripts/docstrap.lib.js"></script>
+	<script src="scripts/bootstrap-dropdown.js"></script>
+	<script src="scripts/toc.js"></script>
+
+	<script>
+		$( function () {
+			$( "[id*='$']" ).each( function () {
+				var $this = $( this );
+
+				$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+			} );
+
+			$( "#toc" ).toc( {
+				anchorName  : function ( i, heading, prefix ) {
+					return $( heading ).attr( "id" ) || ( prefix + i );
+				},
+				selectors   : "h1,h2,h3,h4",
+				showAndHide : false,
+				scrollTo    : "100px"
+			} );
+
+			$( "#toc>ul" ).addClass( "nav nav-pills nav-stacked" );
+			$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+			$( '.dropdown-toggle' ).dropdown();
+//			$( ".tutorial-section pre, .readme-section pre" ).addClass( "sunlight-highlight-javascript" ).addClass( "linenums" );
+
+			$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+				var $this = $( this );
+
+				var example = $this.find( "code" );
+				exampleText = example.html();
+				var lang = /{@lang (.*?)}/.exec( exampleText );
+				if ( lang && lang[1] ) {
+					exampleText = exampleText.replace( lang[0], "" );
+					example.html( exampleText );
+					lang = lang[1];
+				} else {
+					lang = "javascript";
+				}
+
+				if ( lang ) {
+
+					$this
+						.addClass( "sunlight-highlight-" + lang )
+						.addClass( "linenums" )
+						.html( example.html() );
+
+				}
+			} );
+
+			Sunlight.highlightAll( {
+				lineNumbers : true,
+				showMenu : true,
+				enableDoclinks : true
+			} );
+		} );
+	 </script>
+
+
+
+	<!--Navigation and Symbol Display-->
+	
+
+
+	<!--Google Analytics-->
+	
+
+</body>
+</html>

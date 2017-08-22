@@ -1,0 +1,155 @@
+module.exports = UDPSocket;
+
+/**
+ * Dependencies.
+ */
+var dgram =       require('dgram');
+var Grammar =     require('./Grammar');
+var debug =       require('debug')('JsSIP:UDPSocket');
+var debugerror =  require('debug')('JsSIP:ERROR:UDPSocket');
+
+var C = {
+  DEFAULT_HOST: 0.0.0.0,
+  DEFUALT_PORT: 5060,
+
+  // Socket status
+  STATUS_CONNECTED:           0,
+  STATUS_CONNECTING:          1,
+  STATUS_DISCONNECTED:        2,
+};
+
+function UDPSocket(options) {
+  debug('new()');
+
+  if (!options.remote_host) {
+    throw new TypeError('Missing argument: remote_host');
+  }
+
+  this.remote_host = options.remote_host;
+  this.remote_port = options.remote_port || C.DEFAULT_PORT;
+  this.local_host = options.local_host || C.DEFAULT_HOST;
+  this.local_port = options.local_port || C.DEFAULT_PORT;
+
+  var via_transport = 'UDP';
+  var sip_uri = 'sip:'+ host +':'+ port;
+  var url = host +':'+ port;
+
+  this.socket = null;
+
+  Object.defineProperties(this, {
+    via_transport: {
+      get: function() { return via_transport; },
+      set: function(transport) {
+        via_transport = transport.toUpperCase();
+      }
+    },
+    sip_uri:  { get: function() { return sip_uri; }},
+    url:      { get: function() { return url; }}
+  });
+
+  var parsed = Grammar.parse(remote_host, 'host');
+  if(parsed === -1) {
+    debugerror('invalid UDPSocket remote_host: ' + remote_host);
+    throw new TypeError('Invalid argument: '+ remote_host);
+  }
+
+  //TODO hostnames?
+  this.remote_host_type = (parsed.host_family === 'IPv6')? 'udp6': 'udp4';
+
+  if (!remote_port) {
+    remote_port = C.DEFAULT_PORT;
+  } else {
+    if (!Number(remote_port)) {
+      debugerror('invalid UDPSocket port: ' + remote_port);
+      throw new TypeError('Invalid argument: '+ remote_port);
+    }
+  }
+}
+
+UDPSocket.prototype.connect = function () {
+  debug('connect()');
+
+  if (this.isConnected()) {
+    debug('UDPSocket ' + this.url + ' is already connected');
+    return;
+  } else if (this.isConnecting()) {
+    debug('UDPSocket ' + this.url + ' is connecting');
+    return;
+  }
+
+  if (this.socket) {
+    this.socket.close();
+  }
+
+  debug('connecting to UDPSocket ' + this.url);
+
+  this.status = C.STATUS_CONNECTING;
+  try {
+    this.socket = dgram.createSocket(this.remote_host_type);
+
+    this.socket.on('listenting', onOpen.bind(this));
+    this.socket.on('close', onClose.bind(this));
+    this.socket.on('message', onMessage.bind(this));
+    this.socket.on('error', onError.bind(this));
+
+    this.socket.bind(this.port, this.host);
+  } catch(e) {
+    onError.call(this, e);
+  }
+};
+
+UDPSocket.prototype.disconnect = function() {
+  debug('disconnect()');
+
+  this.status = C.STATUS_DISCONNECTED;
+
+  if (this.socket) {
+    this.socket.close();
+    this.socket = null;
+  }
+};
+
+UDPSocket.prototype.send = function(message) {
+  debug('send()');
+
+  if (this.isConnected()) {
+    this.socket.send(message, this.port, this.host, onError.bind(this));
+    return true;
+  }
+};
+
+UDPSocket.prototype.isConnected = function() {
+  return this.status = C.STATUS_CONNECTED;
+};
+
+UDPSocket.prototype.isConnecting = function() {
+  return this.status = C.STATUS_CONNECTING;
+};
+
+
+/**
+ * UDPSocket Event Handlers
+ */
+
+function onOpen() {
+  debug('UDPSocket ' + this.url + ' connected');
+
+  this.status = C.STATUS_CONNECTED;
+  this.onconnect();
+}
+
+function onClose() {
+  debug('UDPSocket ' + this.url + ' closed');
+
+  this.ondisconnect();
+}
+
+function onMessage(buffer) {
+  debug('received UDPSocket message');
+
+  this.ondata(buffer.toString());
+}
+
+function onError(e) {
+  debugerror('UDPSocket ' + this.url + ' error: '+ e);
+}

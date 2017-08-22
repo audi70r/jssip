@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>JsSIP Source: DigestAuthentication.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
+
+</head>
+
+<body>
+<div class="container-fluid">
+	<div class="navbar navbar-fixed-top navbar-inverse">
+		<div class="navbar-inner">
+			<a class="brand" href="index.html">JsSIP</a>
+			<ul class="nav">
+				
+				<li class="dropdown">
+					<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="JsSIP.html">JsSIP</a>
+						</li>
+						
+						<li>
+							<a href="JsSIP.Exceptions.html">JsSIP.Exceptions</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="JsSIP.Exceptions.ConfigurationError.html">JsSIP.Exceptions.ConfigurationError</a>
+						</li>
+						
+						<li>
+							<a href="JsSIP.UA.html">JsSIP.UA</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="global.html#checkTransaction">checkTransaction</a>
+						</li>
+						
+						<li>
+							<a href="global.html#debug">debug</a>
+						</li>
+						
+						<li>
+							<a href="global.html#debugnict">debugnict</a>
+						</li>
+						
+						<li>
+							<a href="global.html#getHeader">getHeader</a>
+						</li>
+						
+						<li>
+							<a href="global.html#JsSIP_C">JsSIP_C</a>
+						</li>
+						
+						<li>
+							<a href="global.html#OutgoingRequest">OutgoingRequest</a>
+						</li>
+						
+						<li>
+							<a href="global.html#URI">URI</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+			</ul>
+		</div>
+	</div>
+
+	<div class="row-fluid">
+
+		
+			<div class="span12">
+				
+				<div id="main">
+					
+
+
+		<h1 class="page-title">Source: DigestAuthentication.js</h1>
+    
+<section>
+	<article>
+		<pre
+			class="sunlight-highlight-javascript linenums">module.exports = DigestAuthentication;
+
+
+/**
+ * Dependencies.
+ */
+var debug = require('debug')('JsSIP:DigestAuthentication');
+var Utils = require('./Utils');
+
+
+function DigestAuthentication(ua) {
+  this.username = ua.configuration.authorization_user;
+  this.password = ua.configuration.password;
+  this.cnonce = null;
+  this.nc = 0;
+  this.ncHex = '00000000';
+  this.response = null;
+}
+
+
+/**
+* Performs Digest authentication given a SIP request and the challenge
+* received in a response to that request.
+* Returns true if credentials were successfully generated, false otherwise.
+*/
+DigestAuthentication.prototype.authenticate = function(request, challenge) {
+  // Inspect and validate the challenge.
+
+  this.algorithm = challenge.algorithm;
+  this.realm = challenge.realm;
+  this.nonce = challenge.nonce;
+  this.opaque = challenge.opaque;
+  this.stale = challenge.stale;
+
+  if (this.algorithm) {
+    if (this.algorithm !== 'MD5') {
+      debug('challenge with Digest algorithm different than "MD5", authentication aborted');
+      return false;
+    }
+  } else {
+    this.algorithm = 'MD5';
+  }
+
+  if (! this.realm) {
+    debug('challenge without Digest realm, authentication aborted');
+    return false;
+  }
+
+  if (! this.nonce) {
+    debug('challenge without Digest nonce, authentication aborted');
+    return false;
+  }
+
+  // 'qop' can contain a list of values (Array). Let's choose just one.
+  if (challenge.qop) {
+    if (challenge.qop.indexOf('auth') > -1) {
+      this.qop = 'auth';
+    } else if (challenge.qop.indexOf('auth-int') > -1) {
+      this.qop = 'auth-int';
+    } else {
+      // Otherwise 'qop' is present but does not contain 'auth' or 'auth-int', so abort here.
+      debug('challenge without Digest qop different than "auth" or "auth-int", authentication aborted');
+      return false;
+    }
+  } else {
+    this.qop = null;
+  }
+
+  // Fill other attributes.
+
+  this.method = request.method;
+  this.uri = request.ruri;
+  this.cnonce = Utils.createRandomToken(12);
+  this.nc += 1;
+  this.updateNcHex();
+
+  // nc-value = 8LHEX. Max value = 'FFFFFFFF'.
+  if (this.nc === 4294967296) {
+    this.nc = 1;
+    this.ncHex = '00000001';
+  }
+
+  // Calculate the Digest "response" value.
+  this.calculateResponse();
+
+  return true;
+};
+
+
+/**
+* Generate Digest 'response' value.
+*/
+DigestAuthentication.prototype.calculateResponse = function() {
+  var ha1, ha2;
+
+  // HA1 = MD5(A1) = MD5(username:realm:password)
+  ha1 = Utils.calculateMD5(this.username + ":" + this.realm + ":" + this.password);
+
+  if (this.qop === 'auth') {
+    // HA2 = MD5(A2) = MD5(method:digestURI)
+    ha2 = Utils.calculateMD5(this.method + ":" + this.uri);
+    // response = MD5(HA1:nonce:nonceCount:credentialsNonce:qop:HA2)
+    this.response = Utils.calculateMD5(ha1 + ":" + this.nonce + ":" + this.ncHex + ":" + this.cnonce + ":auth:" + ha2);
+
+  } else if (this.qop === 'auth-int') {
+    // HA2 = MD5(A2) = MD5(method:digestURI:MD5(entityBody))
+    ha2 = Utils.calculateMD5(this.method + ":" + this.uri + ":" + Utils.calculateMD5(this.body ? this.body : ""));
+    // response = MD5(HA1:nonce:nonceCount:credentialsNonce:qop:HA2)
+    this.response = Utils.calculateMD5(ha1 + ":" + this.nonce + ":" + this.ncHex + ":" + this.cnonce + ":auth-int:" + ha2);
+
+  } else if (this.qop === null) {
+    // HA2 = MD5(A2) = MD5(method:digestURI)
+    ha2 = Utils.calculateMD5(this.method + ":" + this.uri);
+    // response = MD5(HA1:nonce:HA2)
+    this.response = Utils.calculateMD5(ha1 + ":" + this.nonce + ":" + ha2);
+  }
+};
+
+
+/**
+* Return the Proxy-Authorization or WWW-Authorization header value.
+*/
+DigestAuthentication.prototype.toString = function() {
+  var auth_params = [];
+
+  if (! this.response) {
+    throw new Error('response field does not exist, cannot generate Authorization header');
+  }
+
+  auth_params.push('algorithm=' + this.algorithm);
+  auth_params.push('username="' + this.username + '"');
+  auth_params.push('realm="' + this.realm + '"');
+  auth_params.push('nonce="' + this.nonce + '"');
+  auth_params.push('uri="' + this.uri + '"');
+  auth_params.push('response="' + this.response + '"');
+  if (this.opaque) {
+    auth_params.push('opaque="' + this.opaque + '"');
+  }
+  if (this.qop) {
+    auth_params.push('qop=' + this.qop);
+    auth_params.push('cnonce="' + this.cnonce + '"');
+    auth_params.push('nc=' + this.ncHex);
+  }
+
+  return 'Digest ' + auth_params.join(', ');
+};
+
+
+/**
+* Generate the 'nc' value as required by Digest in this.ncHex by reading this.nc.
+*/
+DigestAuthentication.prototype.updateNcHex = function() {
+  var hex = Number(this.nc).toString(16);
+  this.ncHex = '00000000'.substr(0, 8-hex.length) + hex;
+};
+</pre>
+	</article>
+</section>
+
+
+
+
+
+				</div>
+
+				<div class="clearfix"></div>
+				<footer>
+					
+					
+		<span class="copyright">
+		Copyright (c) 2012-2014 Versatica
+		</span>
+					<br />
+					
+		<span class="jsdoc-message">
+		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a>
+		on Sun Nov 9th 2014 using the <a
+			href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		</span>
+				</footer>
+			</div>
+
+			
+			<br clear="both">
+		</div>
+
+	</div>
+	<!--<script src="scripts/sunlight.js"></script>-->
+	<script src="scripts/docstrap.lib.js"></script>
+	<script src="scripts/bootstrap-dropdown.js"></script>
+	<script src="scripts/toc.js"></script>
+
+	<script>
+		$( function () {
+			$( "[id*='$']" ).each( function () {
+				var $this = $( this );
+
+				$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+			} );
+
+			$( "#toc" ).toc( {
+				anchorName  : function ( i, heading, prefix ) {
+					return $( heading ).attr( "id" ) || ( prefix + i );
+				},
+				selectors   : "h1,h2,h3,h4",
+				showAndHide : false,
+				scrollTo    : "100px"
+			} );
+
+			$( "#toc>ul" ).addClass( "nav nav-pills nav-stacked" );
+			$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+			$( '.dropdown-toggle' ).dropdown();
+//			$( ".tutorial-section pre, .readme-section pre" ).addClass( "sunlight-highlight-javascript" ).addClass( "linenums" );
+
+			$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+				var $this = $( this );
+
+				var example = $this.find( "code" );
+				exampleText = example.html();
+				var lang = /{@lang (.*?)}/.exec( exampleText );
+				if ( lang && lang[1] ) {
+					exampleText = exampleText.replace( lang[0], "" );
+					example.html( exampleText );
+					lang = lang[1];
+				} else {
+					lang = "javascript";
+				}
+
+				if ( lang ) {
+
+					$this
+						.addClass( "sunlight-highlight-" + lang )
+						.addClass( "linenums" )
+						.html( example.html() );
+
+				}
+			} );
+
+			Sunlight.highlightAll( {
+				lineNumbers : true,
+				showMenu : true,
+				enableDoclinks : true
+			} );
+		} );
+	 </script>
+
+
+
+	<!--Navigation and Symbol Display-->
+	
+
+
+	<!--Google Analytics-->
+	
+
+</body>
+</html>
