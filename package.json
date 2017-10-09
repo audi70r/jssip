@@ -2,10 +2,10 @@
   "_args": [
     [
       {
-        "raw": "jssip",
+        "raw": "jssip-mod",
         "scope": null,
-        "escapedName": "jssip",
-        "name": "jssip",
+        "escapedName": "jssip-mod",
+        "name": "jssip-mod",
         "rawSpec": "",
         "spec": "latest",
         "type": "tag"
@@ -23,16 +23,16 @@
     "tmp": "tmp/jssip-3.0.13.tgz_1497080421833_0.9714194699190557"
   },
   "_npmUser": {
-    "name": "jmillan",
-    "email": "jmillan@aliax.net"
+    "name": "audi70r",
+    "email": "dmitri.beltjukov@gmail.com"
   },
   "_npmVersion": "4.1.2",
   "_phantomChildren": {},
   "_requested": {
     "raw": "jssip",
     "scope": null,
-    "escapedName": "jssip",
-    "name": "jssip",
+    "escapedName": "jssip-mod",
+    "name": "jssip-mod",
     "rawSpec": "",
     "spec": "latest",
     "type": "tag"
@@ -56,14 +56,9 @@
   },
   "contributors": [
     {
-      "name": "Iñaki Baz Castillo",
-      "email": "ibc@aliax.net",
-      "url": "https://github.com/ibc"
-    },
-    {
-      "name": "Saúl Ibarra Corretgé",
-      "email": "saghul@gmail.com",
-      "url": "https://github.com/saghul"
+      "name": "Dmitri Beltjukov",
+      "email": "dmitri.beltjukov@gmail.com",
+      "url": "https://github.com/audi70r"
     }
   ],
   "dependencies": {
@@ -71,7 +66,7 @@
     "sdp-transform": "^2.3.0",
     "webrtc-adapter": "^3.4.3"
   },
-  "description": "the Javascript SIP library",
+  "description": "the Javascript SIP library (kamailio adapted)",
   "devDependencies": {
     "browserify": "^14.3.0",
     "gulp": "git+https://github.com/gulpjs/gulp.git#4.0",
@@ -115,7 +110,7 @@
       "email": "jmillan@aliax.net"
     }
   ],
-  "name": "jssip",
+  "name": "jssip-mod",
   "optionalDependencies": {},
   "readme": "ERROR: No README data found!",
   "repository": {
@@ -125,6 +120,6 @@
   "scripts": {
     "test": "gulp test"
   },
-  "title": "JsSIP",
+  "title": "JsSIP MOD",
   "version": "3.0.13"
 }

@@ -2,6 +2,11 @@
 
 [![Build Status](https://travis-ci.org/versatica/JsSIP.png?branch=new-design)](https://travis-ci.org/versatica/JsSIP)
 
+## Modifications
+
+* Configured to work over websockets with kamailio and freeswitch
+* Custom contact headers incl. port (see original documentation)
+
 ## Overview
 
 * Runs in the browser and Node.js.
