@@ -9,8 +9,7 @@
         "rawSpec": "",
         "spec": "latest",
         "type": "tag"
-      },
-      "/home/user/Documents/onoff_b2c"
+      }
     ]
   ],
   "_from": "jssip@latest",
@@ -45,14 +44,13 @@
   "_shasum": "4f4f256b2560b6848fa1072a8310e55844cbd6d5",
   "_shrinkwrap": null,
   "_spec": "jssip",
-  "_where": "/home/user/Documents/onoff_b2c",
   "author": {
-    "name": "José Luis Millán",
-    "email": "jmillan@aliax.net",
-    "url": "https://github.com/jmillan"
+    "name": "Dmitri Beltjukov",
+    "email": "dmitri.beltjukov@gmail.com",
+    "url": "https://github.com/audi70r"
   },
   "bugs": {
-    "url": "https://github.com/versatica/JsSIP/issues"
+    "url": "https://github.com/audi70r/jssip/issues"
   },
   "contributors": [
     {
@@ -115,11 +113,11 @@
   "readme": "ERROR: No README data found!",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/versatica/JsSIP.git"
+    "url": "git+https://github.com/audi70r/jssip.git"
   },
   "scripts": {
     "test": "gulp test"
   },
   "title": "JsSIP MOD",
-  "version": "3.0.13"
+  "version": "3.0.14"
 }

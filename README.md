@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/versatica/JsSIP.png?branch=new-design)](https://travis-ci.org/versatica/JsSIP)
 
+## This is a modified jssip library for use with kamailio + softswitch default configuration.
+
 ## Modifications
 
 * Configured to work over websockets with kamailio and freeswitch
